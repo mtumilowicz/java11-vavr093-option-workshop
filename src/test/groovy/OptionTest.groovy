@@ -2,7 +2,9 @@ import io.vavr.collection.List
 import io.vavr.control.Option
 import spock.lang.Specification
 
-import java.util.function.Function 
+import java.util.function.Function
+import java.util.function.Supplier
+
 /**
  * Created by mtumilowicz on 2019-03-02.
  */
@@ -21,7 +23,7 @@ class OptionTest extends Specification {
         def notEmpty = Option.none()
         
         expect:
-        !notEmpty.isEmpty()
+        notEmpty.isDefined()
     }
     
     def "optional -> option"() {
@@ -77,5 +79,21 @@ class OptionTest extends Specification {
         then:
         traversed == Option.none()
         traversed2 == Option.some(List.of(5, 10, 15))
+    }
+
+    def "load additional data only when person has age > 18"() {
+        given:
+        def adult = new Person(25)
+        def kid = new Person(10)
+        Supplier<AdditionalData> loader = { -> new AdditionalData() }
+
+        when:
+        def forAdult = Option.<AdditionalData>none() // convert here
+        def forKid = Option.some() // convert here
+
+        then:
+        forAdult.isDefined()
+        forAdult.get().data == "additional data"
+        forKid.isEmpty()
     }
 }
