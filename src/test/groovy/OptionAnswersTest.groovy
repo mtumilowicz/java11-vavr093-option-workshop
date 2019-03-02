@@ -96,4 +96,17 @@ class OptionAnswersTest extends Specification {
         forAdult.get().data == "additional data"
         forKid.isEmpty()
     }
+    
+    def "map value with a partial function; if not defined -> empty"() {
+        given:
+        def option = Option.some(0)
+
+        when:
+        def dived = option.collect(new Functions().div())
+        def summed = option.collect(new Functions().add())
+
+        then:
+        dived == Option.none()
+        summed == Option.some(5)
+    }
 }
