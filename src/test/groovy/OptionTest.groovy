@@ -7,6 +7,22 @@ import java.util.function.Function
  * Created by mtumilowicz on 2019-03-02.
  */
 class OptionTest extends Specification {
+
+    def "create empty option"() {
+        given:
+        def notEmpty = Option.some()
+
+        expect:
+        notEmpty.isEmpty()
+    }
+    
+    def "create not empty option"() {
+        given:
+        def notEmpty = Option.none()
+        
+        expect:
+        !notEmpty.isEmpty()
+    }
     
     def "optional -> option"() {
         given:

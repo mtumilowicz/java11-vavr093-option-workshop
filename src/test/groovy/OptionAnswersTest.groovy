@@ -10,6 +10,22 @@ import java.util.function.Function
  */
 class OptionAnswersTest extends Specification {
 
+    def "create empty option"() {
+        given:
+        def notEmpty = Option.none()
+
+        expect:
+        notEmpty.isEmpty()
+    }
+
+    def "create not empty option"() {
+        given:
+        def notEmpty = Option.some()
+
+        expect:
+        !notEmpty.isEmpty()
+    }
+
     def "optional -> option"() {
         given:
         def emptyOptional = Optional.empty()
