@@ -43,5 +43,4 @@ class Statistics {
     Option<Long> stats4() {
         return Option.none();
     }
-    
 }
