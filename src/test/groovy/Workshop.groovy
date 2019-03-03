@@ -87,7 +87,7 @@ class Workshop extends Specification {
         given:
         def adult = new Person(25)
         def kid = new Person(10)
-        Supplier<AdditionalData> loader = { -> new AdditionalData() }
+        Supplier<AdditionalData> loader = { new AdditionalData() }
 
         when:
         def forAdult = Option.<AdditionalData> none() // convert here
@@ -120,7 +120,7 @@ class Workshop extends Specification {
         def counter = new Counter()
         assert counter.get() == 0
         and:
-        Runnable action = { -> counter.increment() }
+        Runnable action = { counter.increment() }
 
         when:
         empty // perform action here

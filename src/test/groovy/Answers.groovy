@@ -68,7 +68,7 @@ class Answers extends Specification {
         given:
         def adult = new Person(25)
         def kid = new Person(10)
-        Supplier<AdditionalData> loader = { -> new AdditionalData() }
+        Supplier<AdditionalData> loader = { new AdditionalData() }
 
         when:
         def forAdult = Option.when(adult.isAdult(), loader)
@@ -101,7 +101,7 @@ class Answers extends Specification {
         def counter = new Counter()
         assert counter.get() == 0
         and:
-        Runnable action = { -> counter.increment() }
+        Runnable action = { counter.increment() }
 
         when:
         empty.onEmpty(action)
@@ -144,9 +144,9 @@ class Answers extends Specification {
         def fakeName = "fakeMichal"
 
         when:
-        def foundById = Repository.findById(realId).orElse({ -> Repository.findByName(realName) })
-        def foundByName = Repository.findById(fakeId).orElse({ -> Repository.findByName(realName) })
-        def notFound = Repository.findById(fakeId).orElse({ -> Repository.findByName(fakeName) })
+        def foundById = Repository.findById(realId).orElse({ Repository.findByName(realName) })
+        def foundByName = Repository.findById(fakeId).orElse({ Repository.findByName(realName) })
+        def notFound = Repository.findById(fakeId).orElse({ Repository.findByName(fakeName) })
 
         then:
         Option.some("found-by-id") == foundById
