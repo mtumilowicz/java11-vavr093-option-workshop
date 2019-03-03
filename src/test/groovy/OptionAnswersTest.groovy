@@ -151,4 +151,15 @@ class OptionAnswersTest extends Specification {
         Option.some("found-by-name") == foundByName
         Option.none() == notFound
     }
+    
+    def "throw IllegalStateException if option is empty, otherwise get value"() {
+        given:
+        def empty = Option.none()
+        
+        when:
+        empty.getOrElseThrow({-> new IllegalStateException()})
+        
+        then:
+        thrown(IllegalStateException)
+    }
 }
