@@ -10,6 +10,10 @@ public class Counter {
         counter.incrementAndGet();
     }
     
+    void increment(int value) {
+        counter.addAndGet(value);
+    }
+    
     int get() {
         return counter.get();
     }

@@ -192,4 +192,19 @@ class OptionTest extends Specification {
         then:
         found.get() == "found-by-id"
     }
+
+    def "increment counter by option value"() {
+        given:
+        def empty = Option.<Integer>none()
+        def five = Option.some(5)
+        and:
+        def counter = new Counter()
+
+        when:
+        empty // increment counter here
+        five // increment counter here
+        
+        then:
+        counter.get() == 5
+    }
 }
