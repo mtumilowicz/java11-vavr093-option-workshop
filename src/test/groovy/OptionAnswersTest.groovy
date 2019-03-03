@@ -162,4 +162,15 @@ class OptionAnswersTest extends Specification {
         then:
         thrown(IllegalStateException)
     }
+    
+    def "flatten Option<Option> -> Option"() {
+        given:
+        def id = Option.some(1)
+        
+        when:
+        def found = id.flatMap({ value -> Repository.findById(value) })
+        
+        then:
+        found.get() == "found-by-id"
+    }
 }
