@@ -207,4 +207,20 @@ class OptionTest extends Specification {
         then:
         counter.get() == 5
     }
+
+    def "convert option containing number to the string of that number (or empty)"() {
+        given:
+        def empty = Option.<Integer>none()
+        def five = Option.some(5)
+        and:
+        Function<Option<Integer>, String> transformer = { option -> option.isEmpty() ? "" : option.get().toString()}
+
+        when:
+        def transformedEmpty = empty // perform transformation here
+        def transformerFive = five // perform transformation here
+
+        then:
+        transformedEmpty == ""
+        transformerFive == "5"
+    }
 }

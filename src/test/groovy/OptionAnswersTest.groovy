@@ -1,6 +1,7 @@
 import io.vavr.control.Option
 import spock.lang.Specification
 
+import java.util.function.Function
 import java.util.function.Supplier
 import java.util.stream.Collectors
 
@@ -187,5 +188,21 @@ class OptionAnswersTest extends Specification {
         
         then:
         counter.get() == 5
+    }
+    
+    def "convert option containing number to the string of that number (or empty)"() {
+        given:
+        def empty = Option.<Integer>none()
+        def five = Option.some(5)
+        and:
+        Function<Option<Integer>, String> transformer = { option -> option.isEmpty() ? "" : option.get().toString()}
+        
+        when:
+        def transformedEmpty = empty.transform(transformer)
+        def transformerFive = five.transform(transformer)
+        
+        then:
+        transformedEmpty == ""
+        transformerFive == "5"
     }
 }
