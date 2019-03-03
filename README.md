@@ -3,4 +3,4 @@
 
 # project description
 * on the workshop we will try to fix failing `Workshop`
-* answers: `Answers` (same tests as in `Workshop` but correctly fixed)
+* answers: `Answers` (same tests as in `Workshop` but correctly solved)
