@@ -12,6 +12,10 @@ repositories {
     mavenCentral()
 }
 
+test {
+    exclude '**/OptionTest*'
+}
+
 dependencies {
     compile group: 'io.vavr', name: 'vavr', version: '0.9.3'
     testCompile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.5.6'
