@@ -1,10 +1,11 @@
+import io.vavr.collection.List
 import io.vavr.control.Option
 import spock.lang.Specification
 
+import java.util.concurrent.atomic.AtomicInteger
 import java.util.function.Function
 import java.util.function.Supplier
-import java.util.stream.Collectors
-
+import java.util.stream.Collectors 
 /**
  * Created by mtumilowicz on 2019-03-02.
  */
@@ -204,5 +205,17 @@ class OptionAnswersTest extends Specification {
         then:
         transformedEmpty == ""
         transformerFive == "5"
+    }
+    
+    def "sum all values in the list"() {
+        given:
+        def accumulator = new AtomicInteger()
+        def list = List.of(List.of(1, 2, 3), Set.of(4, 5), Option.some(7))
+        
+        when:
+        list.forEach({iterable -> iterable.forEach({i -> accumulator.addAndGet(i)})})
+        
+        then:
+        accumulator.get() == 22
     }
 }
