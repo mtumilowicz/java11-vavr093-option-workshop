@@ -252,4 +252,15 @@ class OptionTest extends Specification {
         exists
         !notExists
     }
+
+    def "check if all values in the list are < 10"() {
+        given:
+        def list = List.of(List.of(1, 2, 3), Set.of(4, 5), Option.some(7))
+
+        when:
+        def lessThan10 = list // perform action here
+
+        then:
+        lessThan10
+    }
 }
