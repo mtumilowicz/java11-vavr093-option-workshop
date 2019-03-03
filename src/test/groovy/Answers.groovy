@@ -8,11 +8,11 @@ import java.util.stream.Collectors
 /**
  * Created by mtumilowicz on 2019-03-02.
  */
-class OptionTest extends Specification {
+class Answers extends Specification {
 
     def "create empty option"() {
         given:
-        def notEmpty = Option.some()
+        def notEmpty = Option.none()
 
         expect:
         notEmpty.isEmpty()
@@ -20,7 +20,7 @@ class OptionTest extends Specification {
 
     def "create not empty option"() {
         given:
-        def notEmpty = Option.none()
+        def notEmpty = Option.some()
 
         expect:
         notEmpty.isDefined()
@@ -32,8 +32,8 @@ class OptionTest extends Specification {
         def notEmptyOptional = Optional.of(1)
 
         when:
-        def emptyOption = emptyOptional // convert here to option
-        def notEmptyOption = notEmptyOptional// convert here to option
+        def emptyOption = Option.ofOptional(emptyOptional)
+        def notEmptyOption = Option.ofOptional(notEmptyOptional)
 
         then:
         emptyOption == Option.none()
@@ -46,40 +46,21 @@ class OptionTest extends Specification {
         def notEmptyOption = Option.some(1)
 
         when:
-        def emptyOptional = emptyOption // convert here to optional
-        def notEmptyOptional = notEmptyOption // convert here to optional
+        def emptyOptional = emptyOption.toJavaOptional()
+        def notEmptyOptional = notEmptyOption.toJavaOptional()
 
         then:
         emptyOptional == Optional.empty()
         notEmptyOptional == Optional.of(1)
     }
 
-    def "list of options -> option of values"() {
+    def "list of options -> option of list"() {
         given:
-        def statistics = new Statistics()
+        def statistics = new StatisticsAnswer()
 
         expect:
         [BigDecimal.TEN, BigInteger.TWO, 1] == statistics.stats().get().collect(Collectors.toList())
         Option.none() == statistics.statsAll()
-    }
-
-    /*
-        if the function returns empty option for some element -> option should be empty
-     */
-
-    def "transform a list of values into option of values using function value -> Option(value)"() {
-        given:
-        Function<Integer, Option<Integer>> convert = { i -> i > 10 ? Option.some(i) : Option.none() }
-        Function<Integer, Option<Integer>> convert2 = { i -> i >= 5 ? Option.some(i) : Option.none() }
-        def ints = List.of(5, 10, 15)
-
-        when:
-        def traversed = Option.some(1) // convert here
-        def traversed2 = Option.none() // convert here
-
-        then:
-        traversed == Option.none()
-        traversed2 == Option.some(List.of(5, 10, 15))
     }
 
     def "load additional data only when person has age > 18"() {
@@ -89,8 +70,8 @@ class OptionTest extends Specification {
         Supplier<AdditionalData> loader = { -> new AdditionalData() }
 
         when:
-        def forAdult = Option.<AdditionalData> none() // convert here
-        def forKid = Option.some() // convert here
+        def forAdult = Option.when(adult.isAdult(), loader)
+        def forKid = Option.when(kid.isAdult(), loader)
 
         then:
         forAdult.isDefined()
@@ -103,8 +84,8 @@ class OptionTest extends Specification {
         def option = Option.some(0)
 
         when:
-        def dived = Option.some() // convert here
-        def summed = Option.none() // convert here
+        def dived = option.collect(new Functions().div())
+        def summed = option.collect(new Functions().add())
 
         then:
         dived == Option.none()
@@ -122,8 +103,8 @@ class OptionTest extends Specification {
         Runnable action = { -> counter.increment() }
 
         when:
-        empty // perform action here
-        notEmpty // perform action here
+        empty.onEmpty(action)
+        notEmpty.onEmpty(action)
 
         then:
         counter.get() == 1
@@ -135,8 +116,8 @@ class OptionTest extends Specification {
         def notEmpty = Option.some()
 
         expect:
-        !empty.isEmpty() // check here
-        !notEmpty.isDefined() // check here
+        empty.isEmpty()
+        notEmpty.isDefined()
     }
 
     def "if option has an adult as a value do nothing, otherwise empty"() {
@@ -145,8 +126,8 @@ class OptionTest extends Specification {
         def kid = Option.some(new Person(15))
 
         when:
-        def checkedAdult = Option.none() // transform here
-        def checkedKid = Option.some() // transform here
+        def checkedAdult = adult.filter({ p -> p.isAdult() })
+        def checkedKid = kid.filter({ p -> p.isAdult() })
 
         then:
         checkedAdult == adult
@@ -162,64 +143,64 @@ class OptionTest extends Specification {
         def fakeName = "fakeMichal"
 
         when:
-        def foundById = Option.none() // search here using Repository (realId, realName)
-        def foundByName = Option.none() // search here using Repository (fakeId, realName)
-        def notFound = Option.some() // search here using Repository (fakeId, fakeName)
+        def foundById = Repository.findById(realId).orElse({ -> Repository.findByName(realName) })
+        def foundByName = Repository.findById(fakeId).orElse({ -> Repository.findByName(realName) })
+        def notFound = Repository.findById(fakeId).orElse({ -> Repository.findByName(fakeName) })
 
         then:
         Option.some("found-by-id") == foundById
         Option.some("found-by-name") == foundByName
         Option.none() == notFound
     }
-
+    
     def "throw IllegalStateException if option is empty, otherwise get value"() {
         given:
         def empty = Option.none()
-
+        
         when:
-        empty // perform get or throw here
-
+        empty.getOrElseThrow({-> new IllegalStateException()})
+        
         then:
         thrown(IllegalStateException)
     }
-
+    
     def "flatten Option<Option> -> Option"() {
         given:
         def id = Option.some(1)
-
+        
         when:
-        def found = id // perform mapping on id, use Repository.findById
-
+        def found = id.flatMap({ value -> Repository.findById(value) })
+        
         then:
         found.get() == "found-by-id"
     }
-
+    
     def "increment counter by option value"() {
         given:
         def empty = Option.<Integer>none()
         def five = Option.some(5)
         and:
         def counter = new Counter()
-
+        
         when:
-        empty // increment counter here
-        five // increment counter here
+        empty.peek({value -> counter.increment(value)})
+        five.peek({value -> counter.increment(value)})
         
         then:
         counter.get() == 5
     }
-
+    
     def "convert option containing number to the string of that number (or empty)"() {
         given:
         def empty = Option.<Integer>none()
         def five = Option.some(5)
         and:
         Function<Option<Integer>, String> transformer = { option -> option.isEmpty() ? "" : option.get().toString()}
-
+        
         when:
-        def transformedEmpty = empty // perform transformation here
-        def transformerFive = five // perform transformation here
-
+        def transformedEmpty = empty.transform(transformer)
+        def transformerFive = five.transform(transformer)
+        
         then:
         transformedEmpty == ""
         transformerFive == "5"
@@ -230,7 +211,7 @@ class OptionTest extends Specification {
         def list = List.of(List.of(1, 2, 3), Set.of(4, 5), Option.some(7))
 
         when:
-        def sum = list // perform summing here
+        def sum = list.inject(0, { acc, iterable -> acc + iterable.inject(0, { accum, value -> accum + value }) })
 
         then:
         sum == 22
@@ -243,9 +224,9 @@ class OptionTest extends Specification {
         def list = List.of(List.of(1, 2, 3), Set.of(4, 5), Option.some(existing))
 
         when:
-        def exists = list // perform searching here
-        def notExists = list // perform searching here
-
+        def exists = list.exists({iterable -> iterable.contains(existing)})
+        def notExists = list.exists({iterable -> iterable.contains(notExisting)})
+        
         then:
         exists
         !notExists
@@ -256,7 +237,7 @@ class OptionTest extends Specification {
         def list = List.of(List.of(1, 2, 3), Set.of(4, 5), Option.some(7))
 
         when:
-        def lessThan10 = list // perform action here
+        def lessThan10 = list.forAll({iterable -> iterable.every {value -> value < 10}})
 
         then:
         lessThan10
