@@ -2,7 +2,6 @@ import io.vavr.collection.List
 import io.vavr.control.Option
 import spock.lang.Specification
 
-import java.util.concurrent.atomic.AtomicInteger
 import java.util.function.Function
 import java.util.function.Supplier
 import java.util.stream.Collectors 
@@ -206,17 +205,16 @@ class OptionAnswersTest extends Specification {
         transformedEmpty == ""
         transformerFive == "5"
     }
-    
+
     def "sum all values in the list"() {
         given:
-        def accumulator = new AtomicInteger()
         def list = List.of(List.of(1, 2, 3), Set.of(4, 5), Option.some(7))
-        
+
         when:
-        list.forEach({iterable -> iterable.forEach({i -> accumulator.addAndGet(i)})})
-        
+        def sum = list.inject(0, { acc, iterable -> acc + iterable.inject(0, { accum, value -> accum + value }) })
+
         then:
-        accumulator.get() == 22
+        sum == 22
     }
 
     def "check if somewhere in the list is 7"() {
