@@ -11,20 +11,20 @@ import java.math.BigInteger;
 class Statistics {
     
     /*
-    implement method get() that will gather stats:
+    implement method stats() that will gather stats:
         stats1, stats2, stats3 and return them as a option(list(stats1, stats2, stats3)
-        if any of stats returns empty then get() should also return empty 
+        if any of stats returns empty then stats() should also return empty 
      */
-    Option<Seq<Number>> get() {
+    Option<Seq<Number>> stats() {
         return Option.none();
     }
 
     /*
-    implement method getAll() that will gather stats:
+    implement method statsAll() that will gather stats:
         stats1, stats2, stats3, stats4 and return them as a option(list(stats1, stats2, stats3, stats4)
-        if any of stats returns empty then getAll() should also return empty 
+        if any of stats returns empty then statsAll() should also return empty 
      */
-    Option<Seq<Number>> getAll() {
+    Option<Seq<Number>> statsAll() {
         return Option.some(List.of(1));
     }
     

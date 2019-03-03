@@ -7,11 +7,11 @@ import io.vavr.control.Option;
  */
 class StatisticsAnswer extends Statistics {
     
-    Option<Seq<Number>> get() {
+    Option<Seq<Number>> stats() {
         return Option.sequence(List.of(stats1(), stats2(), stats3()));
     }
 
-    Option<Seq<Number>> getAll() {
+    Option<Seq<Number>> statsAll() {
         return Option.sequence(List.of(stats1(), stats2(), stats3(), stats4()));
     }
 }

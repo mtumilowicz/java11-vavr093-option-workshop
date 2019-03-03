@@ -1,9 +1,9 @@
-import io.vavr.collection.List
 import io.vavr.control.Option
 import spock.lang.Specification
 
-import java.util.function.Function
-import java.util.function.Supplier 
+import java.util.function.Supplier
+import java.util.stream.Collectors
+
 /**
  * Created by mtumilowicz on 2019-03-02.
  */
@@ -58,27 +58,8 @@ class OptionAnswersTest extends Specification {
         def statistics = new StatisticsAnswer()
         
         expect:
-        Option.some(List.of(BigDecimal.TEN, BigInteger.TWO, 1)) == statistics.get()
-        Option.none() == statistics.getAll()
-    }
-
-    /*
-        if the function returns empty option for some element -> option should be empty
-    */
-
-    def "transform a list of values into option of values using function value -> Option(value)"() {
-        given:
-        Function<Integer, Option<Integer>> convert = { i -> i > 10 ? Option.some(i) : Option.none() }
-        Function<Integer, Option<Integer>> convert2 = { i -> i >= 5 ? Option.some(i) : Option.none() }
-        def ints = List.of(5, 10, 15)
-
-        when:
-        def traversed = Option.traverse(ints, convert)
-        def traversed2 = Option.traverse(ints, convert2)
-
-        then:
-        traversed == Option.none()
-        traversed2 == Option.some(List.of(5, 10, 15))
+        [BigDecimal.TEN, BigInteger.TWO, 1] == statistics.stats().get().collect(Collectors.toList())
+        Option.none() == statistics.statsAll()
     }
     
     def "load additional data only when person has age > 18"() {
@@ -108,5 +89,23 @@ class OptionAnswersTest extends Specification {
         then:
         dived == Option.none()
         summed == Option.some(5)
+    }
+    
+    def "if empty - do action, otherwise do nothing"() {
+        given:
+        def empty = Option.none()
+        def notEmpty = Option.some(5)
+        and:
+        def counter = new Counter()
+        assert counter.get() == 0
+        and:
+        Runnable action = {-> counter.increment()}
+        
+        when:
+        empty.onEmpty(action)
+        notEmpty.onEmpty(action)
+        
+        then:
+        counter.get() == 1
     }
 }
