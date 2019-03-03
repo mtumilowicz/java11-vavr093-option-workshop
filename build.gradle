@@ -3,7 +3,7 @@ plugins {
     id 'groovy'
 }
 
-group 'java11-vavr-option-workshop'
+group 'java11-vavr-093-option-workshop'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 11
