@@ -5,7 +5,8 @@ import spock.lang.Specification
 
 import java.util.function.Function
 import java.util.function.Supplier
-import java.util.stream.Collectors 
+import java.util.stream.Collectors
+
 /**
  * Created by mtumilowicz on 2019-03-02.
  */
@@ -127,8 +128,8 @@ class Answers extends Specification {
         def kid = Option.some(new Person(15))
 
         when:
-        def checkedAdult = adult.filter({ p -> p.isAdult() })
-        def checkedKid = kid.filter({ p -> p.isAdult() })
+        def checkedAdult = adult.filter({ it.isAdult() })
+        def checkedKid = kid.filter({ it.isAdult() })
 
         then:
         checkedAdult == adult
@@ -153,55 +154,55 @@ class Answers extends Specification {
         Option.some("found-by-name") == foundByName
         Option.none() == notFound
     }
-    
+
     def "throw IllegalStateException if option is empty, otherwise get value"() {
         given:
         def empty = Option.none()
-        
+
         when:
-        empty.getOrElseThrow({-> new IllegalStateException()})
-        
+        empty.getOrElseThrow({ new IllegalStateException() })
+
         then:
         thrown(IllegalStateException)
     }
-    
+
     def "flatten Option<Option> -> Option"() {
         given:
         def id = Option.some(1)
-        
+
         when:
-        def found = id.flatMap({ value -> Repository.findById(value) })
-        
+        def found = id.flatMap({ Repository.findById(it) })
+
         then:
         found.get() == "found-by-id"
     }
-    
+
     def "increment counter by option value"() {
         given:
-        def empty = Option.<Integer>none()
+        def empty = Option.<Integer> none()
         def five = Option.some(5)
         and:
         def counter = new Counter()
-        
+
         when:
-        empty.peek({value -> counter.increment(value)})
-        five.peek({value -> counter.increment(value)})
-        
+        empty.peek({ counter.increment(it) })
+        five.peek({ counter.increment(it) })
+
         then:
         counter.get() == 5
     }
-    
+
     def "convert option containing number to the string of that number (or empty)"() {
         given:
-        def empty = Option.<Integer>none()
+        def empty = Option.<Integer> none()
         def five = Option.some(5)
         and:
-        Function<Option<Integer>, String> transformer = { option -> option.isEmpty() ? "" : option.get().toString()}
-        
+        Function<Option<Integer>, String> transformer = { it.isEmpty() ? "" : it.get().toString() }
+
         when:
         def transformedEmpty = empty.transform(transformer)
         def transformerFive = five.transform(transformer)
-        
+
         then:
         transformedEmpty == ""
         transformerFive == "5"
@@ -225,9 +226,9 @@ class Answers extends Specification {
         def list = List.of(List.of(1, 2, 3), HashSet.of(4, 5), Option.some(existing))
 
         when:
-        def exists = list.exists({iterable -> iterable.contains(existing)})
-        def notExists = list.exists({iterable -> iterable.contains(notExisting)})
-        
+        def exists = list.exists({ it.contains(existing) })
+        def notExists = list.exists({ it.contains(notExisting) })
+
         then:
         exists
         !notExists
@@ -238,21 +239,21 @@ class Answers extends Specification {
         def list = List.of(List.of(1, 2, 3), HashSet.of(4, 5), Option.some(7))
 
         when:
-        def lessThan10 = list.forAll({iterable -> iterable.forAll({value -> value < 10})})
+        def lessThan10 = list.forAll({ it.forAll({ it < 10 }) })
 
         then:
         lessThan10
     }
-    
+
     def "square value or do nothing if empty"() {
         given:
         def defined = Option.some(2)
-        def empty = Option.<Integer>none()
-        
+        def empty = Option.<Integer> none()
+
         when:
-        def definedMapped = defined.map({value -> value * value})
-        def emptyMapped = empty.map({value -> value * value})
-        
+        def definedMapped = defined.map({ it * it })
+        def emptyMapped = empty.map({ it * it })
+
         then:
         definedMapped.defined
         definedMapped.get() == 4

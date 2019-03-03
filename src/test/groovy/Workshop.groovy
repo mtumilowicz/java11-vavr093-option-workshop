@@ -5,7 +5,8 @@ import spock.lang.Specification
 
 import java.util.function.Function
 import java.util.function.Supplier
-import java.util.stream.Collectors 
+import java.util.stream.Collectors
+
 /**
  * Created by mtumilowicz on 2019-03-02.
  */
@@ -70,8 +71,8 @@ class Workshop extends Specification {
 
     def "transform a list of values into option of values using function value -> Option(value)"() {
         given:
-        Function<Integer, Option<Integer>> convert = { i -> i > 10 ? Option.some(i) : Option.none() }
-        Function<Integer, Option<Integer>> convert2 = { i -> i >= 5 ? Option.some(i) : Option.none() }
+        Function<Integer, Option<Integer>> convert = { it > 10 ? Option.some(it) : Option.none() }
+        Function<Integer, Option<Integer>> convert2 = { it >= 5 ? Option.some(it) : Option.none() }
         def ints = List.of(5, 10, 15)
 
         when:
@@ -197,7 +198,7 @@ class Workshop extends Specification {
 
     def "increment counter by option value"() {
         given:
-        def empty = Option.<Integer>none()
+        def empty = Option.<Integer> none()
         def five = Option.some(5)
         and:
         def counter = new Counter()
@@ -205,17 +206,17 @@ class Workshop extends Specification {
         when:
         empty // increment counter here
         five // increment counter here
-        
+
         then:
         counter.get() == 5
     }
 
     def "convert option containing number to the string of that number (or empty)"() {
         given:
-        def empty = Option.<Integer>none()
+        def empty = Option.<Integer> none()
         def five = Option.some(5)
         and:
-        Function<Option<Integer>, String> transformer = { option -> option.isEmpty() ? "" : option.get().toString()}
+        Function<Option<Integer>, String> transformer = { it.isEmpty() ? "" : it.get().toString() }
 
         when:
         def transformedEmpty = empty // perform transformation here
@@ -266,7 +267,7 @@ class Workshop extends Specification {
     def "square value or do nothing if empty"() {
         given:
         def defined = Option.some(2)
-        def empty = Option.<Integer>none()
+        def empty = Option.<Integer> none()
 
         when:
         def definedMapped = Option.none() // map here
