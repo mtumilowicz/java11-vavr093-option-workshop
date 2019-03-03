@@ -127,4 +127,14 @@ class OptionTest extends Specification {
         then:
         counter.get() == 1
     }
+
+    def "check if option is empty / not empty"() {
+        given:
+        def empty = Option.none()
+        def notEmpty = Option.some()
+
+        expect:
+        !empty.isEmpty() // check here
+        !notEmpty.isDefined() // check here
+    }
 }
