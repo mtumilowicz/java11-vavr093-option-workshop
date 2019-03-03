@@ -151,4 +151,23 @@ class OptionTest extends Specification {
         checkedAdult == adult
         checkedKid == Option.none()
     }
+
+    def "find by id, otherwise try to find by name, otherwise empty"() {
+        given:
+        def realId = 1
+        def realName = "Michal"
+        and:
+        def fakeId = 2
+        def fakeName = "fakeMichal"
+
+        when:
+        def foundById = Option.none() // search here using Repository
+        def foundByName = Option.none() // search here using Repository
+        def notFound = Option.some() // search here using Repository
+
+        then:
+        Option.some("found-by-id") == foundById
+        Option.some("found-by-name") == foundByName
+        Option.none() == notFound
+    }
 }
