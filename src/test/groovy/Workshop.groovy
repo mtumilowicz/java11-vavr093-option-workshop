@@ -1,3 +1,4 @@
+import io.vavr.collection.HashSet
 import io.vavr.collection.List
 import io.vavr.control.Option
 import spock.lang.Specification
@@ -227,7 +228,7 @@ class Workshop extends Specification {
 
     def "sum all values in the list"() {
         given:
-        def list = List.of(List.of(1, 2, 3), Set.of(4, 5), Option.some(7))
+        def list = List.of(List.of(1, 2, 3), HashSet.of(4, 5), Option.some(7))
 
         when:
         def sum = list // perform summing here
@@ -240,7 +241,7 @@ class Workshop extends Specification {
         given:
         def existing = 7
         def notExisting = 10
-        def list = List.of(List.of(1, 2, 3), Set.of(4, 5), Option.some(existing))
+        def list = List.of(List.of(1, 2, 3), HashSet.of(4, 5), Option.some(existing))
 
         when:
         def exists = list // perform searching here
@@ -253,7 +254,7 @@ class Workshop extends Specification {
 
     def "check if all values in the list are < 10"() {
         given:
-        def list = List.of(List.of(1, 2, 3), Set.of(4, 5), Option.some(7))
+        def list = List.of(List.of(1, 2, 3), HashSet.of(4, 5), Option.some(7))
 
         when:
         def lessThan10 = list // perform action here
