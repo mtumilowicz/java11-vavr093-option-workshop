@@ -218,4 +218,19 @@ class OptionAnswersTest extends Specification {
         then:
         accumulator.get() == 22
     }
+
+    def "check if somewhere in the list is 7"() {
+        given:
+        def existing = 7
+        def notExisting = 10
+        def list = List.of(List.of(1, 2, 3), Set.of(4, 5), Option.some(existing))
+
+        when:
+        def exists = list.exists({iterable -> iterable.contains(existing)})
+        def notExists = list.exists({iterable -> iterable.contains(notExisting)})
+        
+        then:
+        exists
+        !notExists
+    }
 }

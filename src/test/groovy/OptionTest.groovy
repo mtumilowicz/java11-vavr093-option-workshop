@@ -232,9 +232,24 @@ class OptionTest extends Specification {
         def list = List.of(List.of(1, 2, 3), Set.of(4, 5), Option.some(7))
 
         when:
-        list.forEach() // perform summing in for each
+        list // perform summing here
 
         then:
         accumulator.get() == 22
+    }
+
+    def "check if somewhere in the list is 7"() {
+        given:
+        def existing = 7
+        def notExisting = 10
+        def list = List.of(List.of(1, 2, 3), Set.of(4, 5), Option.some(existing))
+
+        when:
+        def exists = list // perform searching here
+        def notExists = list // perform searching here
+
+        then:
+        exists
+        !notExists
     }
 }
