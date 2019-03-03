@@ -142,9 +142,9 @@ class OptionAnswersTest extends Specification {
         def fakeName = "fakeMichal"
 
         when:
-        def foundById = Repository.findById(realId).orElse(Repository.findByName(realName))
-        def foundByName = Repository.findById(fakeId).orElse(Repository.findByName(realName))
-        def notFound = Repository.findById(fakeId).orElse(Repository.findByName(fakeName))
+        def foundById = Repository.findById(realId).orElse({ -> Repository.findByName(realName) })
+        def foundByName = Repository.findById(fakeId).orElse({ -> Repository.findByName(realName) })
+        def notFound = Repository.findById(fakeId).orElse({ -> Repository.findByName(fakeName) })
 
         then:
         Option.some("found-by-id") == foundById

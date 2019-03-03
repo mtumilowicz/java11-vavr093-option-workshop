@@ -161,9 +161,9 @@ class OptionTest extends Specification {
         def fakeName = "fakeMichal"
 
         when:
-        def foundById = Option.none() // search here using Repository
-        def foundByName = Option.none() // search here using Repository
-        def notFound = Option.some() // search here using Repository
+        def foundById = Option.none() // search here using Repository (realId, realName)
+        def foundByName = Option.none() // search here using Repository (fakeId, realName)
+        def notFound = Option.some() // search here using Repository (fakeId, fakeName)
 
         then:
         Option.some("found-by-id") == foundById
