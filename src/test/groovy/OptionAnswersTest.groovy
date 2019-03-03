@@ -118,4 +118,18 @@ class OptionAnswersTest extends Specification {
         empty.isEmpty()
         notEmpty.isDefined()
     }
+    
+    def "if option has an adult as a value do nothing, otherwise empty"() {
+        given:
+        def adult = Option.some(new Person(20))
+        def kid = Option.some(new Person(15))
+        
+        when:
+        def checkedAdult = adult.filter({p -> p.isAdult()})
+        def checkedKid = kid.filter({p -> p.isAdult()})
+        
+        then:
+        checkedAdult == adult
+        checkedKid == Option.none()
+    }
 }
