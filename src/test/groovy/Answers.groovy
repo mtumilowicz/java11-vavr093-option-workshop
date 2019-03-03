@@ -86,8 +86,8 @@ class Answers extends Specification {
         def option = Option.some(0)
 
         when:
-        def dived = option.collect(new Functions().div())
-        def summed = option.collect(new Functions().add())
+        def dived = option.collect(Functions.div())
+        def summed = option.collect(Functions.add())
 
         then:
         dived == Option.none()
