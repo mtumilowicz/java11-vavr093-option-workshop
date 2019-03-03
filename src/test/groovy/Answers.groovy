@@ -177,6 +177,22 @@ class Answers extends Specification {
         found.get() == "found-by-id"
     }
 
+    def "find engine for a given car id"() {
+        given:
+        def existingCarId = 1
+        def notExistingCarId = 2
+
+        when:
+        Option<Engine> engineFound = Repository.findCarById(existingCarId)
+                .flatMap({ Repository.findEngineById(it.engineId) })
+        Option<Engine> engineNotFound = Repository.findCarById(notExistingCarId)
+                .flatMap({ Repository.findEngineById(it.engineId) })
+
+        then:
+        engineFound.defined
+        engineNotFound.empty
+    }
+
     def "increment counter by option value"() {
         given:
         def empty = Option.<Integer> none()

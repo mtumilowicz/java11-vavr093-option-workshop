@@ -196,6 +196,20 @@ class Workshop extends Specification {
         found.get() == "found-by-id"
     }
 
+    def "find engine for a given car id"() {
+        given:
+        def existingCarId = 1
+        def notExistingCarId = 2
+
+        when:
+        Option<Engine> engineFound = Option.none() // find using Repository.findCarById, Repository.findEngineById 
+        Option<Engine> engineNotFound = Option.none() // find using Repository.findCarById, Repository.findEngineById 
+
+        then:
+        engineFound.defined
+        engineNotFound.empty
+    }
+
     def "increment counter by option value"() {
         given:
         def empty = Option.<Integer> none()
