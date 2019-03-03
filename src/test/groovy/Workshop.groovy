@@ -262,4 +262,19 @@ class Workshop extends Specification {
         then:
         lessThan10
     }
+
+    def "square value or do nothing if empty"() {
+        given:
+        def defined = Option.some(2)
+        def empty = Option.<Integer>none()
+
+        when:
+        def definedMapped = Option.none() // map here
+        def emptyMapped = Option.some(1) // map here
+
+        then:
+        definedMapped.defined
+        definedMapped.get() == 4
+        emptyMapped.empty
+    }
 }

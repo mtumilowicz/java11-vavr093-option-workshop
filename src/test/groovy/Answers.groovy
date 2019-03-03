@@ -243,4 +243,19 @@ class Answers extends Specification {
         then:
         lessThan10
     }
+    
+    def "square value or do nothing if empty"() {
+        given:
+        def defined = Option.some(2)
+        def empty = Option.<Integer>none()
+        
+        when:
+        def definedMapped = defined.map({value -> value * value})
+        def emptyMapped = empty.map({value -> value * value})
+        
+        then:
+        definedMapped.defined
+        definedMapped.get() == 4
+        emptyMapped.empty
+    }
 }
