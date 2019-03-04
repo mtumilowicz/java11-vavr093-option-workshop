@@ -65,24 +65,6 @@ class Workshop extends Specification {
         Option.none() == statistics.statsAll()
     }
 
-    /*
-        if the function returns Option.none for some element -> transformed option should also be empty
-     */
-    def "transform a list of values into option of values using function value -> Option(value)"() {
-        given:
-        Function<Integer, Option<Integer>> convert = { it > 10 ? Option.some(it) : Option.none() }
-        Function<Integer, Option<Integer>> convert2 = { it >= 5 ? Option.some(it) : Option.none() }
-        def ints = List.of(5, 10, 15)
-
-        when:
-        def traversed = Option.some(1) // convert here
-        def traversed2 = Option.none() // convert here
-
-        then:
-        traversed == Option.none()
-        traversed2 == Option.some(List.of(5, 10, 15))
-    }
-
     def "load additional data only when person has age > 18"() {
         given:
         def adult = new Person(25)
