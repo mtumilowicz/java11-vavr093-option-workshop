@@ -3,5 +3,9 @@
 # java11-vavr-093-option-workshop
 
 # project description
+* https://www.vavr.io/vavr-docs/#_option
+* https://static.javadoc.io/io.vavr/vavr/0.9.3/io/vavr/control/Option.html
+* https://github.com/mtumilowicz/java11-vavr-option
+* https://github.com/mtumilowicz/java11-category-theory-optional-is-not-functor
 * on the workshop we will try to fix failing `Workshop`
 * answers: `Answers` (same tests as in `Workshop` but correctly solved)
