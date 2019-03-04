@@ -28,7 +28,7 @@ class Answers extends Specification {
         notEmpty.isDefined()
     }
 
-    def "optional -> option"() {
+    def "conversion: optional -> option"() {
         given:
         def emptyOptional = Optional.empty()
         def notEmptyOptional = Optional.of(1)
@@ -42,7 +42,7 @@ class Answers extends Specification {
         notEmptyOption == Option.some(1)
     }
 
-    def "option -> optional"() {
+    def "conversion: option -> optional"() {
         given:
         def emptyOption = Option.none()
         def notEmptyOption = Option.some(1)
@@ -56,7 +56,7 @@ class Answers extends Specification {
         notEmptyOptional == Optional.of(1)
     }
 
-    def "list of options -> option of list"() {
+    def "conversion: List<Option<X>> -> Option<List<X>>"() {
         given:
         def statistics = new StatisticsAnswer()
 
@@ -81,7 +81,7 @@ class Answers extends Specification {
         forKid.isEmpty()
     }
 
-    def "map value with a partial function; if not defined -> empty"() {
+    def "map value with a partial function; if not defined -> Option.none()"() {
         given:
         def option = Option.some(0)
 
@@ -208,7 +208,7 @@ class Answers extends Specification {
         counter.get() == 5
     }
 
-    def "convert option containing number to the string of that number (or empty)"() {
+    def "convert: Option<Integer> -> String, Option.none() -> empty string"() {
         given:
         def empty = Option.<Integer> none()
         def five = Option.some(5)

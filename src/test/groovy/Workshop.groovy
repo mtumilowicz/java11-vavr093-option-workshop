@@ -14,7 +14,7 @@ class Workshop extends Specification {
 
     def "create empty option"() {
         given:
-        def notEmpty = Option.some()
+        def notEmpty = Option.some() // create here
 
         expect:
         notEmpty.isEmpty()
@@ -22,13 +22,13 @@ class Workshop extends Specification {
 
     def "create not empty option"() {
         given:
-        def notEmpty = Option.none()
+        def notEmpty = Option.none() // create here
 
         expect:
         notEmpty.isDefined()
     }
 
-    def "optional -> option"() {
+    def "conversion: optional -> option"() {
         given:
         def emptyOptional = Optional.empty()
         def notEmptyOptional = Optional.of(1)
@@ -42,7 +42,7 @@ class Workshop extends Specification {
         notEmptyOption == Option.some(1)
     }
 
-    def "option -> optional"() {
+    def "conversion: option -> optional"() {
         given:
         def emptyOption = Option.none()
         def notEmptyOption = Option.some(1)
@@ -56,7 +56,7 @@ class Workshop extends Specification {
         notEmptyOptional == Optional.of(1)
     }
 
-    def "list of options -> option of values"() {
+    def "conversion: List<Option<X>> -> Option<List<X>>"() {
         given:
         def statistics = new Statistics()
 
@@ -66,9 +66,8 @@ class Workshop extends Specification {
     }
 
     /*
-        if the function returns empty option for some element -> option should be empty
+        if the function returns Option.none for some element -> transformed option should also be empty
      */
-
     def "transform a list of values into option of values using function value -> Option(value)"() {
         given:
         Function<Integer, Option<Integer>> convert = { it > 10 ? Option.some(it) : Option.none() }
@@ -91,7 +90,7 @@ class Workshop extends Specification {
         Supplier<AdditionalData> loader = { new AdditionalData() }
 
         when:
-        def forAdult = Option.<AdditionalData> none() // convert here
+        def forAdult = Option.<AdditionalData>none() // convert here
         def forKid = Option.some() // convert here
 
         then:
@@ -100,7 +99,7 @@ class Workshop extends Specification {
         forKid.isEmpty()
     }
 
-    def "map value with a partial function; if not defined -> empty"() {
+    def "map value with a partial function; if not defined -> Option.none()"() {
         given:
         def option = Option.some(0)
 
@@ -137,8 +136,8 @@ class Workshop extends Specification {
         def notEmpty = Option.some()
 
         expect:
-        !empty.isEmpty() // check here
-        !notEmpty.isDefined() // check here
+        !empty // check here
+        !notEmpty // check here
     }
 
     def "if option has an adult as a value do nothing, otherwise empty"() {
@@ -164,9 +163,9 @@ class Workshop extends Specification {
         def fakeName = "fakeMichal"
 
         when:
-        def foundById = Option.none() // search here using Repository (realId, realName)
-        def foundByName = Option.none() // search here using Repository (fakeId, realName)
-        def notFound = Option.some() // search here using Repository (fakeId, fakeName)
+        def foundById = Option.none() // search here using Repository and (realId, realName)
+        def foundByName = Option.none() // search here using Repository and (fakeId, realName)
+        def notFound = Option.some() // search here using Repository and (fakeId, fakeName)
 
         then:
         Option.some("found-by-id") == foundById
@@ -212,7 +211,7 @@ class Workshop extends Specification {
 
     def "increment counter by option value"() {
         given:
-        def empty = Option.<Integer> none()
+        def empty = Option.<Integer>none()
         def five = Option.some(5)
         and:
         def counter = new Counter()
@@ -225,7 +224,7 @@ class Workshop extends Specification {
         counter.get() == 5
     }
 
-    def "convert option containing number to the string of that number (or empty)"() {
+    def "convert: Option<Integer> -> String, Option.none() -> empty string"() {
         given:
         def empty = Option.<Integer> none()
         def five = Option.some(5)
