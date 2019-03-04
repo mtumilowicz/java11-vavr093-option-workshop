@@ -5,8 +5,7 @@ import spock.lang.Specification
 
 import java.util.function.Function
 import java.util.function.Supplier
-import java.util.stream.Collectors
-
+import java.util.stream.Collectors 
 /**
  * Created by mtumilowicz on 2019-03-02.
  */
@@ -272,5 +271,11 @@ class Workshop extends Specification {
         definedMapped.defined
         definedMapped.get() == 4
         emptyMapped.empty
+    }
+
+    def "function composition, monadic law; example of option.map(f g) = option.map(f).map(g)"() {
+        // propose an example of Optional breaking monadic law (function composition), and compare it to Option
+        expect:
+        false
     }
 }

@@ -7,6 +7,8 @@ import java.util.function.Function
 import java.util.function.Supplier
 import java.util.stream.Collectors
 
+import static java.util.Objects.nonNull
+
 /**
  * Created by mtumilowicz on 2019-03-02.
  */
@@ -274,5 +276,16 @@ class Answers extends Specification {
         definedMapped.defined
         definedMapped.get() == 4
         emptyMapped.empty
+    }
+
+    def "function composition, monadic law; example of option.map(f g) = option.map(f).map(g)"() {
+        given:
+        Function<Integer, Integer> nullFunction = { null }
+        Function<Integer, String> safeToString = { nonNull(it) ? String.valueOf(it) : "null" }
+        Function<Integer, String> composition = nullFunction.andThen(safeToString)
+
+        expect:
+        Optional.of(1).map(composition) != Optional.of(1).map(nullFunction).map(safeToString)
+        Option.of(1).map(composition) == Option.of(1).map(nullFunction).map(safeToString)
     }
 }
