@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Created by mtumilowicz on 2019-03-03.
  */
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-public class Counter {
+class Counter {
     AtomicInteger counter = new AtomicInteger();
 
     void increment() {
