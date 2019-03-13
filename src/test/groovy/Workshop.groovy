@@ -137,20 +137,18 @@ class Workshop extends Specification {
 
     def "find by id, otherwise try to find by name, otherwise empty"() {
         given:
-        def realId = 1
-        def realName = "Michal"
-        and:
-        def fakeId = 2
-        def fakeName = "fakeMichal"
+        def existsInCache = 1
+        def existsInDatabase = 2
+        def fakeId = 3
 
         when:
-        def foundById = Option.none() // search here using Repository and (realId, realName)
-        def foundByName = Option.none() // search here using Repository and (fakeId, realName)
-        def notFound = Option.some() // search here using Repository and (fakeId, fakeName)
+        def fromCache = Repository.findById(existsInCache)
+        def fromDatabase = Repository.findById(existsInDatabase)
+        def notFound = Repository.findById(fakeId)
 
         then:
-        Option.some("found-by-id") == foundById
-        Option.some("found-by-name") == foundByName
+        Option.some("from cache") == fromCache
+        Option.some("from database") == fromDatabase
         Option.none() == notFound
     }
 
@@ -173,7 +171,7 @@ class Workshop extends Specification {
         def found = id // perform mapping on id, use Repository.findById
 
         then:
-        found.get() == "found-by-id"
+        found.get() == "from cache"
     }
 
     def "find engine for a given car id"() {

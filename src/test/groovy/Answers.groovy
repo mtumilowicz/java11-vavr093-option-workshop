@@ -138,22 +138,20 @@ class Answers extends Specification {
         checkedKid == Option.none()
     }
 
-    def "find by id, otherwise try to find by name, otherwise empty"() {
+    def "find in cache, otherwise try to find in the database, otherwise empty"() {
         given:
-        def realId = 1
-        def realName = "Michal"
-        and:
-        def fakeId = 2
-        def fakeName = "fakeMichal"
+        def existsInCache = 1
+        def existsInDatabase = 2
+        def fakeId = 3
 
         when:
-        def foundById = Repository.findById(realId).orElse({ Repository.findByName(realName) })
-        def foundByName = Repository.findById(fakeId).orElse({ Repository.findByName(realName) })
-        def notFound = Repository.findById(fakeId).orElse({ Repository.findByName(fakeName) })
+        def fromCache = RepositoryAnswer.findById(existsInCache)
+        def fromDatabase = RepositoryAnswer.findById(existsInDatabase)
+        def notFound = RepositoryAnswer.findById(fakeId)
 
         then:
-        Option.some("found-by-id") == foundById
-        Option.some("found-by-name") == foundByName
+        Option.some("from cache") == fromCache
+        Option.some("from database") == fromDatabase
         Option.none() == notFound
     }
 
@@ -173,10 +171,10 @@ class Answers extends Specification {
         def id = Option.some(1)
 
         when:
-        def found = id.flatMap({ Repository.findById(it) })
+        def found = id.flatMap({ RepositoryAnswer.findById(it) })
 
         then:
-        found.get() == "found-by-id"
+        found.get() == "from cache"
     }
 
     def "find engine for a given car id"() {
