@@ -135,7 +135,7 @@ class Workshop extends Specification {
         checkedKid == Option.none()
     }
 
-    def "find by id, otherwise try to find by name, otherwise empty"() {
+    def "find in cache, otherwise try to find in the database, otherwise empty"() {
         given:
         def existsInCache = 1
         def existsInDatabase = 2
