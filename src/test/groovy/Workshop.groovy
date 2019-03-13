@@ -137,13 +137,13 @@ class Workshop extends Specification {
 
     def "find in cache, otherwise try to find in the database, otherwise empty"() {
         given:
-        def existsInCache = 1
-        def existsInDatabase = 2
+        def fromCacheId = 1
+        def fromDatabaseId = 2
         def fakeId = 3
 
         when:
-        def fromCache = Repository.findById(existsInCache)
-        def fromDatabase = Repository.findById(existsInDatabase)
+        def fromCache = Repository.findById(fromCacheId)
+        def fromDatabase = Repository.findById(fromDatabaseId)
         def notFound = Repository.findById(fakeId)
 
         then:

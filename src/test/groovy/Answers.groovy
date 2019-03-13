@@ -140,13 +140,13 @@ class Answers extends Specification {
 
     def "find in cache, otherwise try to find in the database, otherwise empty"() {
         given:
-        def existsInCache = 1
-        def existsInDatabase = 2
+        def fromCacheId = 1
+        def fromDatabaseId = 2
         def fakeId = 3
 
         when:
-        def fromCache = RepositoryAnswer.findById(existsInCache)
-        def fromDatabase = RepositoryAnswer.findById(existsInDatabase)
+        def fromCache = RepositoryAnswer.findById(fromCacheId)
+        def fromDatabase = RepositoryAnswer.findById(fromDatabaseId)
         def notFound = RepositoryAnswer.findById(fakeId)
 
         then:
