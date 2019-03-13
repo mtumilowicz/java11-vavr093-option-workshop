@@ -1,21 +1,16 @@
+import lombok.Value;
+
 /**
  * Created by mtumilowicz on 2019-03-03.
  */
+@Value
 class Car {
-    final int id;
-    final int engineId;
-
-    Car(int id, int engineId) {
-        this.id = id;
-        this.engineId = engineId;
-    }
+    int id;
+    int engineId;
 }
 
+@Value
 class Engine {
-    final int id;
-
-    Engine(int id) {
-        this.id = id;
-    }
+    int id;
 }
 

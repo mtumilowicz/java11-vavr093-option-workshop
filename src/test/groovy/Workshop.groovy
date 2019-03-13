@@ -184,7 +184,7 @@ class Workshop extends Specification {
         Option<Engine> engineNotFound = Option.none() // find using Repository.findCarById, Repository.findEngineById 
 
         then:
-        engineFound.defined
+        engineFound == Option.some(new Engine(1))
         engineNotFound.empty
     }
 

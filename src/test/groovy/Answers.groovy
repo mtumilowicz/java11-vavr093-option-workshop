@@ -189,7 +189,7 @@ class Answers extends Specification {
                 .flatMap({ Repository.findEngineById(it.engineId) })
 
         then:
-        engineFound.defined
+        engineFound == Option.some(new Engine(1))
         engineNotFound.empty
     }
 
