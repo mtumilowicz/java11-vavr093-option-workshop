@@ -16,7 +16,7 @@ class Answers extends Specification {
 
     def "create empty option"() {
         given:
-        def none = Option.none()
+        Option none = Option.none()
 
         expect:
         none.isEmpty()
@@ -24,7 +24,7 @@ class Answers extends Specification {
 
     def "create not empty option with not null value"() {
         given:
-        def some = Option.some(5)
+        Option<Integer> some = Option.some(5)
 
         expect:
         some.isDefined()
@@ -33,7 +33,7 @@ class Answers extends Specification {
 
     def "create not empty option with null value"() {
         given:
-        def some = Option.some()
+        Option<Integer> some = Option.some()
 
         expect:
         some.isDefined()
@@ -42,12 +42,12 @@ class Answers extends Specification {
 
     def "conversion: optional -> option"() {
         given:
-        def emptyOptional = Optional.empty()
-        def notEmptyOptional = Optional.of(1)
+        Optional<Integer> emptyOptional = Optional.empty()
+        Optional<Integer> notEmptyOptional = Optional.of(1)
 
         when:
-        def emptyOption = Option.ofOptional(emptyOptional)
-        def notEmptyOption = Option.ofOptional(notEmptyOptional)
+        Option<Integer> emptyOption = Option.ofOptional(emptyOptional)
+        Option<Integer> notEmptyOption = Option.ofOptional(notEmptyOptional)
 
         then:
         emptyOption == Option.none()
@@ -56,12 +56,12 @@ class Answers extends Specification {
 
     def "conversion: option -> optional"() {
         given:
-        def emptyOption = Option.none()
-        def notEmptyOption = Option.some(1)
+        Option<Integer> emptyOption = Option.none()
+        Option<Integer> notEmptyOption = Option.some(1)
 
         when:
-        def emptyOptional = emptyOption.toJavaOptional()
-        def notEmptyOptional = notEmptyOption.toJavaOptional()
+        Optional<Integer> emptyOptional = emptyOption.toJavaOptional()
+        Optional<Integer> notEmptyOptional = notEmptyOption.toJavaOptional()
 
         then:
         emptyOptional == Optional.empty()
@@ -70,7 +70,7 @@ class Answers extends Specification {
 
     def "conversion: List<Option<X>> -> Option<List<X>>"() {
         given:
-        def statistics = new StatisticsAnswer()
+        Statistics statistics = new StatisticsAnswer()
 
         expect:
         [BigDecimal.TEN, BigInteger.TWO, 1] == statistics.stats().get().collect(Collectors.toList())
@@ -84,8 +84,8 @@ class Answers extends Specification {
         Supplier<AdditionalData> loader = { new AdditionalData() }
 
         when:
-        def forAdult = Option.when(adult.isAdult(), loader)
-        def forKid = Option.when(kid.isAdult(), loader)
+        Option<AdditionalData> forAdult = Option.when(adult.isAdult(), loader)
+        Option<AdditionalData> forKid = Option.when(kid.isAdult(), loader)
 
         then:
         forAdult.isDefined()
@@ -95,11 +95,11 @@ class Answers extends Specification {
 
     def "map value with a partial function; if not defined -> Option.none()"() {
         given:
-        def option = Option.some(0)
+        Option<Integer> zero = Option.some(0)
 
         when:
-        def dived = option.collect(Functions.div())
-        def summed = option.collect(Functions.add())
+        Option<Integer> dived = zero.collect(Functions.div())
+        Option<Integer> summed = zero.collect(Functions.add())
 
         then:
         dived == Option.none()
@@ -108,8 +108,8 @@ class Answers extends Specification {
 
     def "if empty - do action, otherwise do nothing"() {
         given:
-        def empty = Option.none()
-        def notEmpty = Option.some(5)
+        Option<Integer> empty = Option.none()
+        Option<Integer> notEmpty = Option.some(5)
         and:
         def counter = new Counter()
         assert counter.get() == 0
@@ -136,12 +136,12 @@ class Answers extends Specification {
 
     def "if option has an adult as a value do nothing, otherwise empty"() {
         given:
-        def adult = Option.some(new Person(20))
-        def kid = Option.some(new Person(15))
+        Option<Person> adult = Option.some(new Person(20))
+        Option<Person> kid = Option.some(new Person(15))
 
         when:
-        def checkedAdult = adult.filter({ it.isAdult() })
-        def checkedKid = kid.filter({ it.isAdult() })
+        Option<Person> checkedAdult = adult.filter({ it.isAdult() })
+        Option<Person> checkedKid = kid.filter({ it.isAdult() })
 
         then:
         checkedAdult == adult
@@ -205,8 +205,8 @@ class Answers extends Specification {
 
     def "increment counter by option value"() {
         given:
-        def empty = Option.<Integer> none()
-        def five = Option.some(5)
+        Option<Integer> empty = Option.none()
+        Option<Integer> five = Option.some(5)
         and:
         def counter = new Counter()
 
@@ -220,8 +220,8 @@ class Answers extends Specification {
 
     def "convert: Option<Integer> -> String, Option.none() -> empty string"() {
         given:
-        def empty = Option.<Integer> none()
-        def five = Option.some(5)
+        Option<Integer> empty = Option.none()
+        Option<Integer> five = Option.some(5)
         and:
         Function<Option<Integer>, String> transformer = { it.isEmpty() ? "" : it.get().toString() }
 
@@ -273,12 +273,12 @@ class Answers extends Specification {
 
     def "square value or do nothing if empty"() {
         given:
-        def defined = Option.some(2)
-        def empty = Option.<Integer> none()
+        Option<Integer> defined = Option.some(2)
+        Option<Integer> empty = Option.none()
 
         when:
-        def definedMapped = defined.map({ it * it })
-        def emptyMapped = empty.map({ it * it })
+        Option<Integer> definedMapped = defined.map({ it * it })
+        Option<Integer> emptyMapped = empty.map({ it * it })
 
         then:
         definedMapped.defined
