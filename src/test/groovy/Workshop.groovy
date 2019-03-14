@@ -240,7 +240,7 @@ class Workshop extends Specification {
 
     def "increment counter by option value"() {
         given:
-        Option<Integer> empty = Option.<Integer> none()
+        Option<Integer> empty = Option.none()
         Option<Integer> five = Option.some(5)
 
         and:
@@ -256,7 +256,23 @@ class Workshop extends Specification {
 
     def "convert: Option<Integer> -> String, Option.none() -> empty string"() {
         given:
-        Option<Integer> empty = Option.<Integer> none()
+        Option<Integer> empty = Option.none()
+        Option<Integer> five = Option.some(5)
+        and:
+        Function<Option<Integer>, String> transformer = { it.isEmpty() ? '' : it.get().toString() }
+
+        when:
+        def transformedEmpty = empty // perform transformation here, hint: transform()
+        def transformerFive = five // perform transformation here, hint: transform()
+
+        then:
+        transformedEmpty == ''
+        transformerFive == '5'
+    }
+
+    def "convert: Option<Integer> -> List<Integer>, Option.none() -> empty list"() {
+        given:
+        Option<Integer> empty = Option.none()
         Option<Integer> five = Option.some(5)
         and:
         Function<Option<Integer>, String> transformer = { it.isEmpty() ? '' : it.get().toString() }
