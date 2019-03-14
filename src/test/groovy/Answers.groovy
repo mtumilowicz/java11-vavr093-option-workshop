@@ -176,18 +176,25 @@ class Answers extends Specification {
         thrown(IllegalStateException)
     }
 
-    def "square value or do nothing if empty"() {
+    def "square value then convert to String, if empty - do nothing, null should be treated as 0"() {
         given:
         Option<Integer> defined = Option.some(2)
+        Option<Integer> definedNull = Option.some()
         Option<Integer> empty = Option.none()
 
         when:
-        Option<Integer> definedMapped = defined.map({ it * it })
-        Option<Integer> emptyMapped = empty.map({ it * it })
+        Option<String> definedMapped = defined.map({ nonNull(it) ? it * it : 0 })
+                .map({ it.toString() })
+        Option<String> definedNullMapped = definedNull.map({ nonNull(it) ? it * it : 0 } )
+                .map({ it.toString() })
+        Option<String> emptyMapped = empty.map({ nonNull(it) ? it * it : 0 } )
+                .map({ it.toString() })
 
         then:
         definedMapped.defined
-        definedMapped.get() == 4
+        definedMapped.get() == "4"
+        definedNullMapped.defined
+        definedNullMapped.get() == "0"
         emptyMapped.empty
     }
 

@@ -175,18 +175,21 @@ class Workshop extends Specification {
         thrown(IllegalStateException)
     }
 
-    def "square value or do nothing if empty"() {
+    def "square value then convert to String, if empty - do nothing, null should be treated as 0"() {
         given:
         Option<Integer> defined = Option.some(2)
-        Option<Integer> empty = Option.<Integer> none()
+        Option<Integer> definedNull = Option.some()
+        Option<Integer> empty = Option.none()
 
         when:
-        Option<Integer> definedMapped = Option.none() // map here
-        Option<Integer> emptyMapped = Option.some(1) // map here
-        // DEFINED, EMPTY and Some(null).map.map; third point: then map to String
+        Option<String> definedMapped = defined // map here
+        Option<String> definedNullMapped = definedNull // map here, hint: null check!
+        Option<String> emptyMapped = empty // map here, hint: null check!
 
         then:
         definedMapped.defined
+        definedMapped.get() == "4"
+        definedNullMapped.defined
         definedMapped.get() == 4
         emptyMapped.empty
     }
