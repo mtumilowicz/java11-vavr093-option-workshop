@@ -7,7 +7,6 @@ import spock.lang.Specification
 
 import java.util.function.Function
 import java.util.function.Supplier
-import java.util.stream.Collectors
 
 import static java.util.Objects.nonNull
 
@@ -79,13 +78,25 @@ class Workshop extends Specification {
         notEmptyOptional == Optional.of(1)
     }
 
-    def "conversion: List<Option<X>> -> Option<List<X>>"() {
+    def "conversion: sum values of options: sum = Some(sum all option.get) or None if any of option is empty"() {
         given:
-        Statistics statistics = new Statistics()
+        Option<Integer> value1 = Option.some(1)
+        Option<Integer> value2 = Option.some(3)
+        Option<Integer> value3 = Option.some(5)
+        Option<Integer> value4 = Option.none()
 
-        expect:
-        [BigDecimal.TEN, BigInteger.TWO, 1] == statistics.stats().get().collect(Collectors.toList())
-        Option.none() == statistics.statsAll()
+        and:
+        List<Option<Integer>> valuesToValue3 = List.of(value1, value2, value3)
+        List<Option<Integer>> valuesToValue4 = List.of(value1, value2, value3, value4)
+
+        when:
+        Option<Number> valuesToValue3Sum = -1 // sum here, hint: sequence
+        Option<Number> valuesToValue4Sum = -1 // sum here, hint: sequence
+
+        then:
+        valuesToValue3Sum.defined
+        valuesToValue3Sum.get() == 9
+        valuesToValue4Sum == Option.none()
     }
 
     def "load additional data only when person has age > 18"() {
@@ -127,7 +138,7 @@ class Workshop extends Specification {
         given:
         Option<Integer> empty = Option.none()
         Option<Integer> notEmpty = Option.some(5)
-        
+
         and:
         def counter = 0
 
@@ -232,7 +243,7 @@ class Workshop extends Specification {
         given:
         Option<Integer> empty = Option.<Integer> none()
         Option<Integer> five = Option.some(5)
-        
+
         and:
         def counter = 0
 

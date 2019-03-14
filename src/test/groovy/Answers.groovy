@@ -7,9 +7,9 @@ import spock.lang.Specification
 
 import java.util.function.Function
 import java.util.function.Supplier
-import java.util.stream.Collectors
 
-import static java.util.Objects.nonNull 
+import static java.util.Objects.nonNull
+
 /**
  * Created by mtumilowicz on 2019-03-02.
  */
@@ -79,13 +79,25 @@ class Answers extends Specification {
         notEmptyOptional == Optional.of(1)
     }
 
-    def "conversion: List<Option<X>> -> Option<List<X>>"() {
+    def "conversion: sum values of options: sum = Some(sum all option.get) or None if any of option is empty"() {
         given:
-        Statistics statistics = new StatisticsAnswer()
+        Option<Integer> value1 = Option.some(1)
+        Option<Integer> value2 = Option.some(3)
+        Option<Integer> value3 = Option.some(5)
+        Option<Integer> value4 = Option.none()
 
-        expect:
-        [BigDecimal.TEN, BigInteger.TWO, 1] == statistics.stats().get().collect(Collectors.toList())
-        Option.none() == statistics.statsAll()
+        and:
+        List<Option<Integer>> valuesToValue3 = List.of(value1, value2, value3)
+        List<Option<Integer>> valuesToValue4 = List.of(value1, value2, value3, value4)
+
+        when:
+        Option<Number> valuesToValue3Sum = Option.sequence(valuesToValue3).map({ it.sum() })
+        Option<Number> valuesToValue4Sum = Option.sequence(valuesToValue4).map({ it.sum() })
+
+        then:
+        valuesToValue3Sum.defined
+        valuesToValue3Sum.get() == 9
+        valuesToValue4Sum == Option.none()
     }
 
     def "load additional data only when person has age > 18"() {
@@ -127,10 +139,10 @@ class Answers extends Specification {
         given:
         Option<Integer> empty = Option.none()
         Option<Integer> notEmpty = Option.some(5)
-        
+
         and:
         def counter = 0
-        
+
         and:
         Runnable action = { counter++ }
 
@@ -237,13 +249,13 @@ class Answers extends Specification {
         given:
         Option<Integer> empty = Option.none()
         Option<Integer> five = Option.some(5)
-        
+
         and:
         def counter = 0
 
         when:
-        empty.peek({ counter =+ it })
-        five.peek({ counter =+ it })
+        empty.peek({ counter = +it })
+        five.peek({ counter = +it })
 
         then:
         counter == 5
