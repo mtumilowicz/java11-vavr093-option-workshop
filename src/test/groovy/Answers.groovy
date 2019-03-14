@@ -277,14 +277,14 @@ class Answers extends Specification {
         transformerFive == '5'
     }
 
-    def "convert: Option<Integer> -> List<Integer>, Option.none() -> empty list"() {
+    def "convert: Some<Integer> -> one element List<Integer>, None -> empty list"() {
         given:
         Option<Integer> empty = Option.none()
         Option<Integer> five = Option.some(5)
 
         when:
-        List<Integer> transformedEmpty = empty.map({List.of(it)}).getOrElse(List.empty())
-        List<Integer> transformerFive = five.map({List.of(it)}).getOrElse(List.empty())
+        List<Integer> transformedEmpty = empty.toList()
+        List<Integer> transformerFive = five.toList()
 
         then:
         transformedEmpty == List.empty()
