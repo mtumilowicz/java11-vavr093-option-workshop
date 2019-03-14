@@ -242,8 +242,8 @@ class Answers extends Specification {
         def counter = 0
 
         when:
-        empty.peek({ counter + it })
-        five.peek({ counter + it })
+        empty.peek({ counter =+ it })
+        five.peek({ counter =+ it })
 
         then:
         counter == 5
