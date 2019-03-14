@@ -127,11 +127,12 @@ class Workshop extends Specification {
         given:
         Option<Integer> empty = Option.none()
         Option<Integer> notEmpty = Option.some(5)
+        
         and:
-        def counter = new Counter()
-        assert counter.get() == 0
+        def counter = 0
+
         and:
-        Runnable action = { counter.increment() }
+        Runnable action = { counter++ }
 
         when:
         empty // perform action here, hint: onEmpty()
@@ -231,15 +232,16 @@ class Workshop extends Specification {
         given:
         Option<Integer> empty = Option.<Integer> none()
         Option<Integer> five = Option.some(5)
+        
         and:
-        def counter = new Counter()
+        def counter = 0
 
         when:
         empty // increment counter here, hint: peek(), forEach()
         five // increment counter here, hint: peek(), forEach()
 
         then:
-        counter.get() == 5
+        counter == 5
     }
 
     def "convert: Option<Integer> -> String, Option.none() -> empty string"() {

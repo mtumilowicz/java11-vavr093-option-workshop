@@ -9,8 +9,7 @@ import java.util.function.Function
 import java.util.function.Supplier
 import java.util.stream.Collectors
 
-import static java.util.Objects.nonNull
-
+import static java.util.Objects.nonNull 
 /**
  * Created by mtumilowicz on 2019-03-02.
  */
@@ -128,18 +127,19 @@ class Answers extends Specification {
         given:
         Option<Integer> empty = Option.none()
         Option<Integer> notEmpty = Option.some(5)
+        
         and:
-        def counter = new Counter()
-        assert counter.get() == 0
+        def counter = 0
+        
         and:
-        Runnable action = { counter.increment() }
+        Runnable action = { counter++ }
 
         when:
         empty.onEmpty(action)
         notEmpty.onEmpty(action)
 
         then:
-        counter.get() == 1
+        counter == 1
     }
 
     def "if option has an adult as a value do nothing, otherwise empty"() {
@@ -237,15 +237,16 @@ class Answers extends Specification {
         given:
         Option<Integer> empty = Option.none()
         Option<Integer> five = Option.some(5)
+        
         and:
-        def counter = new Counter()
+        def counter = 0
 
         when:
-        empty.peek({ counter.increment(it) })
-        five.peek({ counter.increment(it) })
+        empty.peek({ counter + it })
+        five.peek({ counter + it })
 
         then:
-        counter.get() == 5
+        counter == 5
     }
 
     def "convert: Option<Integer> -> String, Option.none() -> empty string"() {
