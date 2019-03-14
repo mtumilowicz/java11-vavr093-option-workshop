@@ -46,8 +46,8 @@ class Workshop extends Specification {
         def notEmpty = Option.some()
 
         expect:
-        !empty // check here
-        !notEmpty // check here
+        !empty // check here, hint: isEmpty
+        !notEmpty // check here, hint: isDefined
     }
 
     def "conversion: optional -> option"() {
@@ -56,8 +56,8 @@ class Workshop extends Specification {
         Optional<Integer> notEmptyOptional = Optional.of(1)
 
         when:
-        Option<Integer> emptyOption = emptyOptional // convert here to option, hint: ofOptional
-        Option<Integer> notEmptyOption = notEmptyOptional// convert here to option, hint: ofOptional
+        Option<Integer> emptyOption = emptyOptional // convert here, hint: ofOptional
+        Option<Integer> notEmptyOption = notEmptyOptional// convert here, hint: ofOptional
 
         then:
         emptyOption == Option.none()
@@ -70,14 +70,14 @@ class Workshop extends Specification {
         Option<Integer> notEmptyOption = Option.some(1)
 
         when:
-        Optional<Integer> emptyOptional = emptyOption // convert here to optional, hint: toJavaOptional
-        Optional<Integer> notEmptyOptional = notEmptyOption // convert here to optional, hint: toJavaOptional
+        Optional<Integer> emptyOptional = emptyOption // convert here, hint: toJavaOptional
+        Optional<Integer> notEmptyOptional = notEmptyOption // convert here, hint: toJavaOptional
         then:
         emptyOptional == Optional.empty()
         notEmptyOptional == Optional.of(1)
     }
 
-    def "conversion: sum values of options: sum = Some(sum all option.get) or None if any of option is empty"() {
+    def "conversion: sum = Some(sum all option.get) or None if any of option is empty"() {
         given:
         Option<Integer> value1 = Option.some(1)
         Option<Integer> value2 = Option.some(3)
@@ -98,15 +98,15 @@ class Workshop extends Specification {
         valuesToValue4Sum == Option.none()
     }
 
-    def "load additional data only when person has age > 18"() {
+    def "load additional data only when person.isAdult"() {
         given:
         def adult = new Person(25)
         def kid = new Person(10)
         Supplier<AdditionalData> loader = { new AdditionalData() }
 
         when:
-        Option<AdditionalData> forAdult = -1 // convert here, hint: when()
-        Option<AdditionalData> forKid = -1 // convert here, hint: when()
+        Option<AdditionalData> forAdult = -1 // convert here, hint: when, use person.isAdult
+        Option<AdditionalData> forKid = -1 // convert here, hint: when, use person.isAdult
 
         then:
         forAdult.isDefined()
@@ -133,7 +133,7 @@ class Workshop extends Specification {
         summed == Option.some(5)
     }
 
-    def "if empty - do action, otherwise do nothing"() {
+    def "if empty - run action, otherwise do nothing"() {
         given:
         Option<Integer> empty = Option.none()
         Option<Integer> notEmpty = Option.some(5)
@@ -149,10 +149,10 @@ class Workshop extends Specification {
         notEmpty // perform action here, hint: onEmpty()
 
         then:
-        counter.get() == 1
+        counter == 1
     }
 
-    def "if option has an adult as a value do nothing, otherwise empty"() {
+    def "if option value is an adult - do nothing, otherwise empty"() {
         given:
         Option<Person> adult = Option.some(new Person(20))
         Option<Person> kid = Option.some(new Person(15))
@@ -230,8 +230,8 @@ class Workshop extends Specification {
         def notExistingCarId = 2
 
         when:
-        Option<Engine> engineFound = Option.none() // find using CarRepository.findCarById, CarRepository.findEngineById, hint: flatMap
-        Option<Engine> engineNotFound = Option.none() // find using CarRepository.findCarById, CarRepository.findEngineById, hint: flatMap
+        Option<Engine> engineFound = Option.none() // find using CarRepository.findCarById then CarRepository.findEngineById, hint: flatMap
+        Option<Engine> engineNotFound = Option.none() // find using CarRepository.findCarById then CarRepository.findEngineById, hint: flatMap
 
         then:
         engineFound == Option.some(new Engine(1))
@@ -305,8 +305,8 @@ class Workshop extends Specification {
         def list = List.of(List.of(1, 2, 3), HashSet.of(4, 5), Option.some(existing))
 
         when:
-        def exists = list // perform searching here
-        def notExists = list // perform searching here
+        boolean exists = list // perform searching here
+        boolean notExists = list // perform searching here
 
         then:
         exists
@@ -318,7 +318,7 @@ class Workshop extends Specification {
         def list = List.of(List.of(1, 2, 3), HashSet.of(4, 5), Option.some(7))
 
         when:
-        def lessThan10 = list // perform action here
+        boolean lessThan10 = list // perform action here
 
         then:
         lessThan10

@@ -79,7 +79,7 @@ class Answers extends Specification {
         notEmptyOptional == Optional.of(1)
     }
 
-    def "conversion: sum values of options: sum = Some(sum all option.get) or None if any of option is empty"() {
+    def "conversion: sum = Some(sum all option.get) or None if any of option is empty"() {
         given:
         Option<Integer> value1 = Option.some(1)
         Option<Integer> value2 = Option.some(3)
@@ -100,7 +100,7 @@ class Answers extends Specification {
         valuesToValue4Sum == Option.none()
     }
 
-    def "load additional data only when person has age > 18"() {
+    def "load additional data only when person.isAdult"() {
         given:
         def adult = new Person(25)
         def kid = new Person(10)
@@ -135,7 +135,7 @@ class Answers extends Specification {
         summed == Option.some(5)
     }
 
-    def "if empty - do action, otherwise do nothing"() {
+    def "if empty - run action, otherwise do nothing"() {
         given:
         Option<Integer> empty = Option.none()
         Option<Integer> notEmpty = Option.some(5)
@@ -154,7 +154,7 @@ class Answers extends Specification {
         counter == 1
     }
 
-    def "if option has an adult as a value do nothing, otherwise empty"() {
+    def "if option value is an adult - do nothing, otherwise empty"() {
         given:
         Option<Person> adult = Option.some(new Person(20))
         Option<Person> kid = Option.some(new Person(15))
@@ -312,8 +312,8 @@ class Answers extends Specification {
         def list = List.of(List.of(1, 2, 3), HashSet.of(4, 5), Option.some(existing))
 
         when:
-        def exists = list.exists({ it.contains(existing) })
-        def notExists = list.exists({ it.contains(notExisting) })
+        boolean exists = list.exists({ it.contains(existing) })
+        boolean notExists = list.exists({ it.contains(notExisting) })
 
         then:
         exists
@@ -325,7 +325,7 @@ class Answers extends Specification {
         def list = List.of(List.of(1, 2, 3), HashSet.of(4, 5), Option.some(7))
 
         when:
-        def lessThan10 = list.forAll({ it.forAll({ it < 10 }) })
+        boolean lessThan10 = list.forAll({ it.forAll({ it < 10 }) })
 
         then:
         lessThan10
