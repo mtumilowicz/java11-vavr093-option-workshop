@@ -98,7 +98,7 @@ class Workshop extends Specification {
 
         then:
         forAdult.isDefined()
-        forAdult.get().data == "additional data"
+        forAdult.get().data == 'additional data'
         forKid.isEmpty()
     }
 
@@ -159,8 +159,8 @@ class Workshop extends Specification {
         def notFound = Repository.findById(fakeId)
 
         then:
-        Option.some("from cache") == fromCache
-        Option.some("from database") == fromDatabase
+        Option.some('from cache') == fromCache
+        Option.some('from database') == fromDatabase
         Option.none() == notFound
     }
 
@@ -188,9 +188,9 @@ class Workshop extends Specification {
 
         then:
         definedMapped.defined
-        definedMapped.get() == "4"
+        definedMapped.get() == '4'
         definedNullMapped.defined
-        definedMapped.get() == 4
+        definedNullMapped.get() == '0'
         emptyMapped.empty
     }
 
@@ -202,7 +202,7 @@ class Workshop extends Specification {
         def found = id // perform mapping on id, use Repository.findById, hint: flatMap
 
         then:
-        found.get() == "from cache"
+        found.get() == 'from cache'
     }
 
     def "flatten Option: find engine for a given car id"() {
@@ -221,7 +221,7 @@ class Workshop extends Specification {
 
     def "increment counter by option value"() {
         given:
-        Option<Integer> empty = Option.<Integer>none()
+        Option<Integer> empty = Option.<Integer> none()
         Option<Integer> five = Option.some(5)
         and:
         def counter = new Counter()
@@ -239,15 +239,15 @@ class Workshop extends Specification {
         Option<Integer> empty = Option.<Integer> none()
         Option<Integer> five = Option.some(5)
         and:
-        Function<Option<Integer>, String> transformer = { it.isEmpty() ? "" : it.get().toString() }
+        Function<Option<Integer>, String> transformer = { it.isEmpty() ? '' : it.get().toString() }
 
         when:
         def transformedEmpty = empty // perform transformation here, hint: transform()
         def transformerFive = five // perform transformation here, hint: transform()
 
         then:
-        transformedEmpty == ""
-        transformerFive == "5"
+        transformedEmpty == ''
+        transformerFive == '5'
     }
 
     def "sum all values in the list"() {
@@ -290,7 +290,7 @@ class Workshop extends Specification {
     def "function composition, monadic law; example of option.map(f g) = option.map(f).map(g)"() {
         given:
         Function<Integer, Integer> nullFunction = { null }
-        Function<Integer, String> safeToString = { nonNull(it) ? String.valueOf(it) : "null" }
+        Function<Integer, String> safeToString = { nonNull(it) ? String.valueOf(it) : 'null' }
         Function<Integer, String> composition = nullFunction.andThen(safeToString)
 
         expect:

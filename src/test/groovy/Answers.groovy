@@ -99,7 +99,7 @@ class Answers extends Specification {
 
         then:
         forAdult.isDefined()
-        forAdult.get().data == "additional data"
+        forAdult.get().data == 'additional data'
         forKid.isEmpty()
     }
 
@@ -160,8 +160,8 @@ class Answers extends Specification {
         def notFound = RepositoryAnswer.findById(fakeId)
 
         then:
-        Option.some("from cache") == fromCache
-        Option.some("from database") == fromDatabase
+        Option.some('from cache') == fromCache
+        Option.some('from database') == fromDatabase
         Option.none() == notFound
     }
 
@@ -185,16 +185,16 @@ class Answers extends Specification {
         when:
         Option<String> definedMapped = defined.map({ nonNull(it) ? it * it : 0 })
                 .map({ it.toString() })
-        Option<String> definedNullMapped = definedNull.map({ nonNull(it) ? it * it : 0 } )
+        Option<String> definedNullMapped = definedNull.map({ nonNull(it) ? it * it : 0 })
                 .map({ it.toString() })
-        Option<String> emptyMapped = empty.map({ nonNull(it) ? it * it : 0 } )
+        Option<String> emptyMapped = empty.map({ nonNull(it) ? it * it : 0 })
                 .map({ it.toString() })
 
         then:
         definedMapped.defined
-        definedMapped.get() == "4"
+        definedMapped.get() == '4'
         definedNullMapped.defined
-        definedNullMapped.get() == "0"
+        definedNullMapped.get() == '0'
         emptyMapped.empty
     }
 
@@ -206,7 +206,7 @@ class Answers extends Specification {
         Option<Integer> found = id.flatMap({ RepositoryAnswer.findById(it) })
 
         then:
-        found.get() == "from cache"
+        found.get() == 'from cache'
     }
 
     def "flatten Option: find engine for a given car id"() {
@@ -245,15 +245,15 @@ class Answers extends Specification {
         Option<Integer> empty = Option.none()
         Option<Integer> five = Option.some(5)
         and:
-        Function<Option<Integer>, String> transformer = { it.isEmpty() ? "" : it.get().toString() }
+        Function<Option<Integer>, String> transformer = { it.isEmpty() ? '' : it.get().toString() }
 
         when:
         def transformedEmpty = empty.transform(transformer)
         def transformerFive = five.transform(transformer)
 
         then:
-        transformedEmpty == ""
-        transformerFive == "5"
+        transformedEmpty == ''
+        transformerFive == '5'
     }
 
     def "sum all values in the list"() {
@@ -296,7 +296,7 @@ class Answers extends Specification {
     def "function composition, monadic law; example of option.map(f g) = option.map(f).map(g)"() {
         given:
         Function<Integer, Integer> nullFunction = { null }
-        Function<Integer, String> safeToString = { nonNull(it) ? String.valueOf(it) : "null" }
+        Function<Integer, String> safeToString = { nonNull(it) ? String.valueOf(it) : 'null' }
         Function<Integer, String> composition = nullFunction.andThen(safeToString)
 
         expect:
