@@ -284,6 +284,20 @@ class Workshop extends Specification {
         transformerFive == List.of(5)
     }
 
+    def "convert: one element List<Integer> -> Some<Integer>, empty list -> None"() {
+        given:
+        List<Integer> empty = List.empty()
+        List<Integer> five = List.of(5)
+
+        when:
+        Option<Integer> transformedEmpty = empty // transform here, hint: toOption or map, getOrElse
+        Option<Integer> transformerFive = five // transform here, hint: toOption or map, getOrElse
+
+        then:
+        transformedEmpty == Option.none()
+        transformerFive == Option.some(5)
+    }
+
     def "check if somewhere in the list is 7"() {
         given:
         def existing = 7
