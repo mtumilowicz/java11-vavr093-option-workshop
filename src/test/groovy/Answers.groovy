@@ -16,18 +16,28 @@ class Answers extends Specification {
 
     def "create empty option"() {
         given:
-        def notEmpty = Option.none()
+        def none = Option.none()
 
         expect:
-        notEmpty.isEmpty()
+        none.isEmpty()
     }
 
-    def "create not empty option"() {
+    def "create not empty option with not null value"() {
         given:
-        def notEmpty = Option.some()
+        def some = Option.some(5)
 
         expect:
-        notEmpty.isDefined()
+        some.isDefined()
+        some.get()
+    }
+
+    def "create not empty option with null value"() {
+        given:
+        def some = Option.some()
+
+        expect:
+        some.isDefined()
+        !some.get()
     }
 
     def "conversion: optional -> option"() {

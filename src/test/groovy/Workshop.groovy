@@ -13,18 +13,28 @@ class Workshop extends Specification {
 
     def "create empty option"() {
         given:
-        def notEmpty = Option.some() // create here
+        Option none = -1 // create here, hint: none()
 
         expect:
-        notEmpty.isEmpty()
+        none.isEmpty()
     }
 
-    def "create not empty option"() {
+    def "create not empty option with not null value"() {
         given:
-        def notEmpty = Option.none() // create here
+        Option<Integer> some = -1 // create here, hint: some()
 
         expect:
-        notEmpty.isDefined()
+        some.isDefined()
+        some.get()
+    }
+
+    def "create not empty option with null value"() {
+        given:
+        Option<Integer> some = -1 // create here, hint: some()
+
+        expect:
+        some.isDefined()
+        !some.get()
     }
 
     def "conversion: optional -> option"() {
