@@ -1,3 +1,5 @@
+import io.vavr.Function1
+import io.vavr.PartialFunction
 import io.vavr.collection.HashSet
 import io.vavr.collection.List
 import io.vavr.control.Option
@@ -107,9 +109,15 @@ class Answers extends Specification {
         given:
         Option<Integer> zero = Option.some(0)
 
+        and:
+        PartialFunction<Integer, Integer> div = Function1.of({ 5 / it })
+                .partial({ it != 0 })
+        PartialFunction<Integer, Integer> add = Function1.of({ 5 + it })
+                .partial({ true })
+
         when:
-        Option<Integer> dived = zero.collect(Functions.div())
-        Option<Integer> summed = zero.collect(Functions.add())
+        Option<Integer> dived = zero.collect(div)
+        Option<Integer> summed = zero.collect(add)
 
         then:
         dived == Option.none()

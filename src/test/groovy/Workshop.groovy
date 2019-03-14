@@ -1,3 +1,5 @@
+import io.vavr.Function1
+import io.vavr.PartialFunction
 import io.vavr.collection.HashSet
 import io.vavr.collection.List
 import io.vavr.control.Option
@@ -106,9 +108,15 @@ class Workshop extends Specification {
         given:
         Option<Integer> zero = Option.some(0)
 
+        and:
+        PartialFunction<Integer, Integer> div = Function1.of({ 5 / it })
+                .partial({ it != 0 })
+        PartialFunction<Integer, Integer> add = Function1.of({ 5 + it })
+                .partial({ true })
+
         when:
-        Option<Integer> dived = zero // convert here, hint: collect
-        Option<Integer> summed = zero // convert here, hint: collect
+        Option<Integer> dived = zero // convert here, hint: collect, use div()
+        Option<Integer> summed = zero // convert here, hint: collect, use add()
 
         then:
         dived == Option.none()
