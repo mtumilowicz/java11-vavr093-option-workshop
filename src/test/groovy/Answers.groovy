@@ -277,6 +277,20 @@ class Answers extends Specification {
         transformerFive == '5'
     }
 
+    def "convert: Option<Integer> -> List<Integer>, Option.none() -> empty list"() {
+        given:
+        Option<Integer> empty = Option.none()
+        Option<Integer> five = Option.some(5)
+
+        when:
+        List<Integer> transformedEmpty = empty.map({List.of(it)}).getOrElse(List.empty())
+        List<Integer> transformerFive = five.map({List.of(it)}).getOrElse(List.empty())
+
+        then:
+        transformedEmpty == List.empty()
+        transformerFive == List.of(5)
+    }
+
     def "check if somewhere in the list is 7"() {
         given:
         def existing = 7

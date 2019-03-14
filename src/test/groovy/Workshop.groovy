@@ -262,8 +262,8 @@ class Workshop extends Specification {
         Function<Option<Integer>, String> transformer = { it.isEmpty() ? '' : it.get().toString() }
 
         when:
-        def transformedEmpty = empty // perform transformation here, hint: transform()
-        def transformerFive = five // perform transformation here, hint: transform()
+        def transformedEmpty = empty // transform here, hint: transform(), note: transform ~ (map getOrElse)
+        def transformerFive = five // transform here, hint: transform(), note: transform ~ (map getOrElse)
 
         then:
         transformedEmpty == ''
@@ -274,16 +274,14 @@ class Workshop extends Specification {
         given:
         Option<Integer> empty = Option.none()
         Option<Integer> five = Option.some(5)
-        and:
-        Function<Option<Integer>, String> transformer = { it.isEmpty() ? '' : it.get().toString() }
 
         when:
-        def transformedEmpty = empty // perform transformation here, hint: transform()
-        def transformerFive = five // perform transformation here, hint: transform()
+        List<Integer> transformedEmpty = empty // transform here, hint: map, getOrElse
+        List<Integer> transformerFive = five // transform here, hint: map, getOrElse
 
         then:
-        transformedEmpty == ''
-        transformerFive == '5'
+        transformedEmpty == List.empty()
+        transformerFive == List.of(5)
     }
 
     def "check if somewhere in the list is 7"() {
