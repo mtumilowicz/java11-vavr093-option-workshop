@@ -231,8 +231,8 @@ class Workshop extends Specification {
         def notExistingCarId = 2
 
         when:
-        Option<Engine> engineFound = Option.none() // find using Repository.findCarById, Repository.findEngineById, hint: flatMap
-        Option<Engine> engineNotFound = Option.none() // find using Repository.findCarById, Repository.findEngineById, hint: flatMap
+        Option<Engine> engineFound = Option.none() // find using CarRepository.findCarById, CarRepository.findEngineById, hint: flatMap
+        Option<Engine> engineNotFound = Option.none() // find using CarRepository.findCarById, CarRepository.findEngineById, hint: flatMap
 
         then:
         engineFound == Option.some(new Engine(1))

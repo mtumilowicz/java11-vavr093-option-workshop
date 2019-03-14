@@ -235,10 +235,10 @@ class Answers extends Specification {
         def notExistingCarId = 2
 
         when:
-        Option<Engine> engineFound = Repository.findCarById(existingCarId)
-                .flatMap({ Repository.findEngineById(it.engineId) })
-        Option<Engine> engineNotFound = Repository.findCarById(notExistingCarId)
-                .flatMap({ Repository.findEngineById(it.engineId) })
+        Option<Engine> engineFound = CarRepository.findCarById(existingCarId)
+                .flatMap({ CarRepository.findEngineById(it.engineId) })
+        Option<Engine> engineNotFound = CarRepository.findCarById(notExistingCarId)
+                .flatMap({ CarRepository.findEngineById(it.engineId) })
 
         then:
         engineFound == Option.some(new Engine(1))
