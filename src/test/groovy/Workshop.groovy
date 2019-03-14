@@ -8,8 +8,7 @@ import spock.lang.Specification
 import java.util.function.Function
 import java.util.function.Supplier
 
-import static java.util.Objects.nonNull
-
+import static java.util.Objects.nonNull 
 /**
  * Created by mtumilowicz on 2019-03-02.
  */
@@ -269,17 +268,6 @@ class Workshop extends Specification {
         then:
         transformedEmpty == ''
         transformerFive == '5'
-    }
-
-    def "sum all values in the list"() {
-        given:
-        def list = List.of(List.of(1, 2, 3), HashSet.of(4, 5), Option.some(7))
-
-        when:
-        def sum = list // perform summing here
-
-        then:
-        sum == 22
     }
 
     def "check if somewhere in the list is 7"() {
