@@ -175,6 +175,22 @@ class Workshop extends Specification {
         thrown(IllegalStateException)
     }
 
+    def "square value or do nothing if empty"() {
+        given:
+        Option<Integer> defined = Option.some(2)
+        Option<Integer> empty = Option.<Integer> none()
+
+        when:
+        Option<Integer> definedMapped = Option.none() // map here
+        Option<Integer> emptyMapped = Option.some(1) // map here
+        // DEFINED, EMPTY and Some(null).map.map; third point: then map to String
+
+        then:
+        definedMapped.defined
+        definedMapped.get() == 4
+        emptyMapped.empty
+    }
+
     def "flatten Option, basics"() {
         given:
         def id = Option.some(1)
@@ -266,22 +282,6 @@ class Workshop extends Specification {
 
         then:
         lessThan10
-    }
-
-    def "square value or do nothing if empty"() {
-        given:
-        Option<Integer> defined = Option.some(2)
-        Option<Integer> empty = Option.<Integer> none()
-
-        when:
-        Option<Integer> definedMapped = Option.none() // map here
-        Option<Integer> emptyMapped = Option.some(1) // map here
-        // DEFINED, EMPTY and Some(null).map.map; third point: then map to String
-
-        then:
-        definedMapped.defined
-        definedMapped.get() == 4
-        emptyMapped.empty
     }
 
     def "function composition, monadic law; example of option.map(f g) = option.map(f).map(g)"() {

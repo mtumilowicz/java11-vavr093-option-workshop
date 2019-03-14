@@ -176,6 +176,21 @@ class Answers extends Specification {
         thrown(IllegalStateException)
     }
 
+    def "square value or do nothing if empty"() {
+        given:
+        Option<Integer> defined = Option.some(2)
+        Option<Integer> empty = Option.none()
+
+        when:
+        Option<Integer> definedMapped = defined.map({ it * it })
+        Option<Integer> emptyMapped = empty.map({ it * it })
+
+        then:
+        definedMapped.defined
+        definedMapped.get() == 4
+        emptyMapped.empty
+    }
+
     def "flatten Option, basics"() {
         given:
         Option<Integer> id = Option.some(1)
@@ -269,21 +284,6 @@ class Answers extends Specification {
 
         then:
         lessThan10
-    }
-
-    def "square value or do nothing if empty"() {
-        given:
-        Option<Integer> defined = Option.some(2)
-        Option<Integer> empty = Option.none()
-
-        when:
-        Option<Integer> definedMapped = defined.map({ it * it })
-        Option<Integer> emptyMapped = empty.map({ it * it })
-
-        then:
-        definedMapped.defined
-        definedMapped.get() == 4
-        emptyMapped.empty
     }
 
     def "function composition, monadic law; example of option.map(f g) = option.map(f).map(g)"() {
