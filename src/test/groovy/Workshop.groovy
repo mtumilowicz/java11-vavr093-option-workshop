@@ -5,7 +5,10 @@ import spock.lang.Specification
 
 import java.util.function.Function
 import java.util.function.Supplier
-import java.util.stream.Collectors 
+import java.util.stream.Collectors
+
+import static java.util.Objects.nonNull
+
 /**
  * Created by mtumilowicz on 2019-03-02.
  */
@@ -49,12 +52,12 @@ class Workshop extends Specification {
 
     def "conversion: optional -> option"() {
         given:
-        def emptyOptional = Optional.empty()
-        def notEmptyOptional = Optional.of(1)
+        Optional<Integer> emptyOptional = Optional.empty()
+        Optional<Integer> notEmptyOptional = Optional.of(1)
 
         when:
-        def emptyOption = emptyOptional // convert here to option
-        def notEmptyOption = notEmptyOptional// convert here to option
+        Option<Integer> emptyOption = emptyOptional // convert here to option, hint: ofOptional
+        Option<Integer> notEmptyOption = notEmptyOptional// convert here to option, hint: ofOptional
 
         then:
         emptyOption == Option.none()
@@ -63,13 +66,12 @@ class Workshop extends Specification {
 
     def "conversion: option -> optional"() {
         given:
-        def emptyOption = Option.none()
-        def notEmptyOption = Option.some(1)
+        Option<Integer> emptyOption = Option.none()
+        Option<Integer> notEmptyOption = Option.some(1)
 
         when:
-        def emptyOptional = emptyOption // convert here to optional
-        def notEmptyOptional = notEmptyOption // convert here to optional
-
+        Optional<Integer> emptyOptional = emptyOption // convert here to optional, hint: toJavaOptional
+        Optional<Integer> notEmptyOptional = notEmptyOption // convert here to optional, hint: toJavaOptional
         then:
         emptyOptional == Optional.empty()
         notEmptyOptional == Optional.of(1)
@@ -77,7 +79,7 @@ class Workshop extends Specification {
 
     def "conversion: List<Option<X>> -> Option<List<X>>"() {
         given:
-        def statistics = new Statistics()
+        Statistics statistics = new Statistics()
 
         expect:
         [BigDecimal.TEN, BigInteger.TWO, 1] == statistics.stats().get().collect(Collectors.toList())
@@ -91,8 +93,8 @@ class Workshop extends Specification {
         Supplier<AdditionalData> loader = { new AdditionalData() }
 
         when:
-        def forAdult = Option.<AdditionalData>none() // convert here
-        def forKid = Option.some() // convert here
+        Option<AdditionalData> forAdult = -1 // convert here, hint: when()
+        Option<AdditionalData> forKid = -1 // convert here, hint: when()
 
         then:
         forAdult.isDefined()
@@ -102,11 +104,11 @@ class Workshop extends Specification {
 
     def "map value with a partial function; if not defined -> Option.none()"() {
         given:
-        def option = Option.some(0)
+        Option<Integer> zero = Option.some(0)
 
         when:
-        def dived = Option.some() // convert here
-        def summed = Option.none() // convert here
+        Option<Integer> dived = zero // convert here, hint: collect
+        Option<Integer> summed = zero // convert here, hint: collect
 
         then:
         dived == Option.none()
@@ -115,8 +117,8 @@ class Workshop extends Specification {
 
     def "if empty - do action, otherwise do nothing"() {
         given:
-        def empty = Option.none()
-        def notEmpty = Option.some(5)
+        Option<Integer> empty = Option.none()
+        Option<Integer> notEmpty = Option.some(5)
         and:
         def counter = new Counter()
         assert counter.get() == 0
@@ -124,8 +126,8 @@ class Workshop extends Specification {
         Runnable action = { counter.increment() }
 
         when:
-        empty // perform action here
-        notEmpty // perform action here
+        empty // perform action here, hint: onEmpty()
+        notEmpty // perform action here, hint: onEmpty()
 
         then:
         counter.get() == 1
@@ -133,12 +135,12 @@ class Workshop extends Specification {
 
     def "if option has an adult as a value do nothing, otherwise empty"() {
         given:
-        def adult = Option.some(new Person(20))
-        def kid = Option.some(new Person(15))
+        Option<Person> adult = Option.some(new Person(20))
+        Option<Person> kid = Option.some(new Person(15))
 
         when:
-        def checkedAdult = Option.none() // transform here
-        def checkedKid = Option.some() // transform here
+        Option<Person> checkedAdult = Option.none() // filter here
+        Option<Person> checkedKid = Option.some() // filter here
 
         then:
         checkedAdult == adult
@@ -173,25 +175,25 @@ class Workshop extends Specification {
         thrown(IllegalStateException)
     }
 
-    def "flatten Option<Option> -> Option"() {
+    def "flatten Option, basics"() {
         given:
         def id = Option.some(1)
 
         when:
-        def found = id // perform mapping on id, use Repository.findById
+        def found = id // perform mapping on id, use Repository.findById, hint: flatMap
 
         then:
         found.get() == "from cache"
     }
 
-    def "find engine for a given car id"() {
+    def "flatten Option: find engine for a given car id"() {
         given:
         def existingCarId = 1
         def notExistingCarId = 2
 
         when:
-        Option<Engine> engineFound = Option.none() // find using Repository.findCarById, Repository.findEngineById 
-        Option<Engine> engineNotFound = Option.none() // find using Repository.findCarById, Repository.findEngineById 
+        Option<Engine> engineFound = Option.none() // find using Repository.findCarById, Repository.findEngineById, hint: flatMap
+        Option<Engine> engineNotFound = Option.none() // find using Repository.findCarById, Repository.findEngineById, hint: flatMap
 
         then:
         engineFound == Option.some(new Engine(1))
@@ -200,14 +202,14 @@ class Workshop extends Specification {
 
     def "increment counter by option value"() {
         given:
-        def empty = Option.<Integer>none()
-        def five = Option.some(5)
+        Option<Integer> empty = Option.<Integer>none()
+        Option<Integer> five = Option.some(5)
         and:
         def counter = new Counter()
 
         when:
-        empty // increment counter here
-        five // increment counter here
+        empty // increment counter here, hint: peek(), forEach()
+        five // increment counter here, hint: peek(), forEach()
 
         then:
         counter.get() == 5
@@ -215,14 +217,14 @@ class Workshop extends Specification {
 
     def "convert: Option<Integer> -> String, Option.none() -> empty string"() {
         given:
-        def empty = Option.<Integer> none()
-        def five = Option.some(5)
+        Option<Integer> empty = Option.<Integer> none()
+        Option<Integer> five = Option.some(5)
         and:
         Function<Option<Integer>, String> transformer = { it.isEmpty() ? "" : it.get().toString() }
 
         when:
-        def transformedEmpty = empty // perform transformation here
-        def transformerFive = five // perform transformation here
+        def transformedEmpty = empty // perform transformation here, hint: transform()
+        def transformerFive = five // perform transformation here, hint: transform()
 
         then:
         transformedEmpty == ""
@@ -268,12 +270,13 @@ class Workshop extends Specification {
 
     def "square value or do nothing if empty"() {
         given:
-        def defined = Option.some(2)
-        def empty = Option.<Integer> none()
+        Option<Integer> defined = Option.some(2)
+        Option<Integer> empty = Option.<Integer> none()
 
         when:
-        def definedMapped = Option.none() // map here
-        def emptyMapped = Option.some(1) // map here
+        Option<Integer> definedMapped = Option.none() // map here
+        Option<Integer> emptyMapped = Option.some(1) // map here
+        // DEFINED, EMPTY and Some(null).map.map; third point: then map to String
 
         then:
         definedMapped.defined
@@ -282,8 +285,17 @@ class Workshop extends Specification {
     }
 
     def "function composition, monadic law; example of option.map(f g) = option.map(f).map(g)"() {
-        // propose an example of Optional breaking monadic law (function composition), and compare it to Option
+        given:
+        Function<Integer, Integer> nullFunction = { null }
+        Function<Integer, String> safeToString = { nonNull(it) ? String.valueOf(it) : "null" }
+        Function<Integer, String> composition = nullFunction.andThen(safeToString)
+
         expect:
-        false
+        // Optional map != Optional map map
+        // Optional stream map == Optional stream map map
+        // Option map == Option map map
+        Optional.of(1).map(composition) != Optional.of(1).map(nullFunction).map(safeToString)
+        Optional.of(1).stream().map(composition).findAny() == Optional.of(1).stream().map(nullFunction).map(safeToString).findAny()
+        Option.of(1).map(composition) == Option.of(1).map(nullFunction).map(safeToString)
     }
 }

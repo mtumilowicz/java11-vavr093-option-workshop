@@ -176,18 +176,18 @@ class Answers extends Specification {
         thrown(IllegalStateException)
     }
 
-    def "flatten Option<Option> -> Option"() {
+    def "flatten Option, basics"() {
         given:
-        def id = Option.some(1)
+        Option<Integer> id = Option.some(1)
 
         when:
-        def found = id.flatMap({ RepositoryAnswer.findById(it) })
+        Option<Integer> found = id.flatMap({ RepositoryAnswer.findById(it) })
 
         then:
         found.get() == "from cache"
     }
 
-    def "find engine for a given car id"() {
+    def "flatten Option: find engine for a given car id"() {
         given:
         def existingCarId = 1
         def notExistingCarId = 2
@@ -294,6 +294,7 @@ class Answers extends Specification {
 
         expect:
         Optional.of(1).map(composition) != Optional.of(1).map(nullFunction).map(safeToString)
+        Optional.of(1).stream().map(composition).findAny() == Optional.of(1).stream().map(nullFunction).map(safeToString).findAny()
         Option.of(1).map(composition) == Option.of(1).map(nullFunction).map(safeToString)
     }
 }
