@@ -37,6 +37,16 @@ class Workshop extends Specification {
         !some.get()
     }
 
+    def "check if option is empty / not empty"() {
+        given:
+        def empty = Option.none()
+        def notEmpty = Option.some()
+
+        expect:
+        !empty // check here
+        !notEmpty // check here
+    }
+
     def "conversion: optional -> option"() {
         given:
         def emptyOptional = Optional.empty()
@@ -119,16 +129,6 @@ class Workshop extends Specification {
 
         then:
         counter.get() == 1
-    }
-
-    def "check if option is empty / not empty"() {
-        given:
-        def empty = Option.none()
-        def notEmpty = Option.some()
-
-        expect:
-        !empty // check here
-        !notEmpty // check here
     }
 
     def "if option has an adult as a value do nothing, otherwise empty"() {

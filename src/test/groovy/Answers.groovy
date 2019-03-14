@@ -40,6 +40,16 @@ class Answers extends Specification {
         !some.get()
     }
 
+    def "check if option is empty / not empty"() {
+        given:
+        def empty = Option.none()
+        def notEmpty = Option.some()
+
+        expect:
+        empty.isEmpty()
+        notEmpty.isDefined()
+    }
+
     def "conversion: optional -> option"() {
         given:
         Optional<Integer> emptyOptional = Optional.empty()
@@ -122,16 +132,6 @@ class Answers extends Specification {
 
         then:
         counter.get() == 1
-    }
-
-    def "check if option is empty / not empty"() {
-        given:
-        def empty = Option.none()
-        def notEmpty = Option.some()
-
-        expect:
-        empty.isEmpty()
-        notEmpty.isDefined()
     }
 
     def "if option has an adult as a value do nothing, otherwise empty"() {
