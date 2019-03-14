@@ -1,6 +1,5 @@
 import io.vavr.Function1
 import io.vavr.PartialFunction
-import io.vavr.Value
 import io.vavr.collection.HashSet
 import io.vavr.collection.List
 import io.vavr.control.Option
