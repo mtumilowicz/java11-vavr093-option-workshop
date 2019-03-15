@@ -173,9 +173,9 @@ class Workshop extends Specification {
         def fakeId = 3
 
         when:
-        def fromCache = Repository.findById(fromCacheId)
-        def fromDatabase = Repository.findById(fromDatabaseId)
-        def notFound = Repository.findById(fakeId)
+        def fromCache = FacadeRepository.findById(fromCacheId)
+        def fromDatabase = FacadeRepository.findById(fromDatabaseId)
+        def notFound = FacadeRepository.findById(fakeId)
 
         then:
         Option.some('from cache') == fromCache

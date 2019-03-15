@@ -3,7 +3,7 @@ import io.vavr.control.Option;
 /**
  * Created by mtumilowicz on 2018-11-26.
  */
-class Repository {
+class FacadeRepository {
 
     /*
     implement function that will:
