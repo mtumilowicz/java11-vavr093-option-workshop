@@ -213,6 +213,21 @@ class Workshop extends Specification {
         emptyMapped.empty
     }
 
+    def "Option.map vs Optional.map"() {
+        given:
+        Option<Integer> option = Option.some(2)
+        Optional<Integer> optional = Optional.of(2)
+        Function<Integer, Integer> alwaysNull = { null }
+
+        when:
+        Option<Integer> optionMapped = option.map(alwaysNull)
+        Optional<Integer> optionalMapped = optional.map(alwaysNull)
+
+        then:
+        false // compare results (which is empty, which has null value), hint: isDefined, isEmpty
+
+    }
+
     def "flatten Option, basics"() {
         given:
         def id = Option.some(1)

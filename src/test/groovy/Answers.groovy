@@ -218,6 +218,25 @@ class Answers extends Specification {
         emptyMapped.empty
     }
 
+    def "Option.map vs Optional.map"() {
+        given:
+        Option<Integer> option = Option.some(2)
+        Optional<Integer> optional = Optional.of(2)
+        Function<Integer, Integer> alwaysNull = { null }
+
+        when:
+        Option<Integer> optionMapped = option.map(alwaysNull)
+        Optional<Integer> optionalMapped = optional.map(alwaysNull)
+
+        then:
+        // option
+        optionMapped.isDefined()
+        !optionMapped.get()
+        // optional
+        optionalMapped.isEmpty()
+
+    }
+
     def "flatten Option, basics"() {
         given:
         Option<Integer> id = Option.some(1)
