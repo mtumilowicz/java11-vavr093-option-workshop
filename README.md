@@ -10,3 +10,6 @@
 * https://github.com/mtumilowicz/java11-category-theory-optional-is-not-functor
 * on the workshop we will try to fix failing `Workshop`
 * answers: `Answers` (same tests as in `Workshop` but correctly solved)
+
+# conclusions in a nutshell
+TBA
