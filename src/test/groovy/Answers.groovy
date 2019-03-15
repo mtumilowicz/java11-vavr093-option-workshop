@@ -175,9 +175,9 @@ class Answers extends Specification {
         def fakeId = 3
 
         when:
-        def fromCache = RepositoryAnswer.findById(fromCacheId)
-        def fromDatabase = RepositoryAnswer.findById(fromDatabaseId)
-        def notFound = RepositoryAnswer.findById(fakeId)
+        def fromCache = FacadeRepositoryAnswer.findById(fromCacheId)
+        def fromDatabase = FacadeRepositoryAnswer.findById(fromDatabaseId)
+        def notFound = FacadeRepositoryAnswer.findById(fakeId)
 
         then:
         Option.some('from cache') == fromCache
@@ -223,7 +223,7 @@ class Answers extends Specification {
         Option<Integer> id = Option.some(1)
 
         when:
-        Option<Integer> found = id.flatMap({ RepositoryAnswer.findById(it) })
+        Option<Integer> found = id.flatMap({ FacadeRepositoryAnswer.findById(it) })
 
         then:
         found.get() == 'from cache'
