@@ -352,13 +352,13 @@ class Answers extends Specification {
 
     def "function composition, monadic law; example of option.map(f g) = option.map(f).map(g)"() {
         given:
-        Function<Integer, Integer> nullFunction = { null }
+        Function<Integer, Integer> alwaysNull = { null }
         Function<Integer, String> safeToString = { nonNull(it) ? String.valueOf(it) : 'null' }
-        Function<Integer, String> composition = nullFunction.andThen(safeToString)
+        Function<Integer, String> composition = alwaysNull.andThen(safeToString)
 
         expect:
-        Optional.of(1).map(composition) != Optional.of(1).map(nullFunction).map(safeToString)
-        Optional.of(1).stream().map(composition).findAny() == Optional.of(1).stream().map(nullFunction).map(safeToString).findAny()
-        Option.of(1).map(composition) == Option.of(1).map(nullFunction).map(safeToString)
+        Optional.of(1).map(composition) != Optional.of(1).map(alwaysNull).map(safeToString)
+        Optional.of(1).stream().map(composition).findAny() == Optional.of(1).stream().map(alwaysNull).map(safeToString).findAny()
+        Option.of(1).map(composition) == Option.of(1).map(alwaysNull).map(safeToString)
     }
 }
