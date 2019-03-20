@@ -78,24 +78,6 @@ class Workshop extends Specification {
         notEmptyOptional == Optional.of(1)
     }
 
-    def "conversion: option -> try"() {
-        given:
-        Option<Integer> emptyOption = Option.none()
-        Option<Integer> notEmptyOption = Option.some(1)
-
-        when:
-        Try<Integer> failTry = emptyOption // convert here, hint: toTry()
-        Try<Integer> successTry = notEmptyOption // convert here, hint: toTry()
-
-        then:
-        failTry.failure
-        failTry.cause.class == NoSuchElementException
-
-        and:
-        successTry.success
-        successTry.get() == 1
-    }
-
     def "conversion: sum = Some(sum all option.get) or None if any of option is empty"() {
         given:
         Option<Integer> value1 = Option.some(1)
