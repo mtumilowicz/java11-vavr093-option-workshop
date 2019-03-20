@@ -3,6 +3,7 @@ import io.vavr.PartialFunction
 import io.vavr.collection.HashSet
 import io.vavr.collection.List
 import io.vavr.control.Option
+import io.vavr.control.Try
 import spock.lang.Specification
 
 import java.util.function.Function
@@ -75,6 +76,24 @@ class Workshop extends Specification {
         then:
         emptyOptional == Optional.empty()
         notEmptyOptional == Optional.of(1)
+    }
+
+    def "conversion: option -> try"() {
+        given:
+        Option<Integer> emptyOption = Option.none()
+        Option<Integer> notEmptyOption = Option.some(1)
+
+        when:
+        Try<Integer> failTry = emptyOption // convert here, hint: toTry()
+        Try<Integer> successTry = notEmptyOption // convert here, hint: toTry()
+
+        then:
+        failTry.failure
+        failTry.cause.class == NoSuchElementException
+
+        and:
+        successTry.success
+        successTry.get() == 1
     }
 
     def "conversion: sum = Some(sum all option.get) or None if any of option is empty"() {
