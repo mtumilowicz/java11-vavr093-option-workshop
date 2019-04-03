@@ -358,7 +358,10 @@ class Answers extends Specification {
 
         expect:
         Optional.of(1).map(composition) != Optional.of(1).map(alwaysNull).map(safeToString)
-        Optional.of(1).stream().map(composition).findAny() == Optional.of(1).stream().map(alwaysNull).map(safeToString).findAny()
+        Optional.of(1).stream().map(composition).findAny() == Optional.of(1).stream()
+                .map(alwaysNull)
+                .map(safeToString)
+                .findAny()
         Option.of(1).map(composition) == Option.of(1).map(alwaysNull).map(safeToString)
     }
 }
