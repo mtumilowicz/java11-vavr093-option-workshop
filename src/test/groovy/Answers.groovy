@@ -3,7 +3,6 @@ import io.vavr.PartialFunction
 import io.vavr.collection.HashSet
 import io.vavr.collection.List
 import io.vavr.control.Option
-import io.vavr.control.Try
 import spock.lang.Specification
 
 import java.util.function.Function
