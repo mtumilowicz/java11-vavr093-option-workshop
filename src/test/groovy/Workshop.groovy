@@ -346,11 +346,9 @@ class Workshop extends Specification {
         Function<Integer, String> composition = alwaysNull.andThen(safeToString)
 
         expect:
+        false
         // Optional map != Optional map map
         // Optional stream map == Optional stream map map
         // Option map == Option map map
-        Optional.of(1).map(composition) != Optional.of(1).map(alwaysNull).map(safeToString)
-        Optional.of(1).stream().map(composition).findAny() == Optional.of(1).stream().map(alwaysNull).map(safeToString).findAny()
-        Option.of(1).map(composition) == Option.of(1).map(alwaysNull).map(safeToString)
     }
 }
