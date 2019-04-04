@@ -201,13 +201,15 @@ class Answers extends Specification {
         Option<Integer> defined = Option.some(2)
         Option<Integer> definedNull = Option.some()
         Option<Integer> empty = Option.none()
+        and:
+        Function<Integer, Integer> squareOrZero = { nonNull(it) ? it * it : 0 }
 
         when:
-        Option<String> definedMapped = defined.map({ nonNull(it) ? it * it : 0 })
+        Option<String> definedMapped = defined.map({ squareOrZero.apply(it) })
                 .map({ it.toString() })
-        Option<String> definedNullMapped = definedNull.map({ nonNull(it) ? it * it : 0 })
+        Option<String> definedNullMapped = definedNull.map({ squareOrZero.apply(it) })
                 .map({ it.toString() })
-        Option<String> emptyMapped = empty.map({ nonNull(it) ? it * it : 0 })
+        Option<String> emptyMapped = empty.map({ squareOrZero.apply(it) })
                 .map({ it.toString() })
 
         then:

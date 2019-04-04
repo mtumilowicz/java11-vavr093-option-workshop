@@ -199,11 +199,13 @@ class Workshop extends Specification {
         Option<Integer> defined = Option.some(2)
         Option<Integer> definedNull = Option.some()
         Option<Integer> empty = Option.none()
+        and:
+        Function<Integer, Integer> squareOrZero = -1 // implement: square(null) = 0, square(x) = x^2
 
         when:
         Option<String> definedMapped = defined // map here
-        Option<String> definedNullMapped = definedNull // map here, hint: null check!
-        Option<String> emptyMapped = empty // map here, hint: null check!
+        Option<String> definedNullMapped = definedNull // map here, hint: null check! - investigate what happens without null-check
+        Option<String> emptyMapped = empty // map here
 
         then:
         definedMapped.defined
