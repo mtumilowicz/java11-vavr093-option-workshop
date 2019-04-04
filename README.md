@@ -20,7 +20,7 @@
     * `final class Some<T>`
     * `final class None<T>`
 * `None` instance is a singleton
-* returning `null` inside `map` doesn't cause `Option` switch to `None` (contrary to `Optional`)
+* returning `null` inside `map` does not cause `Option` switch to `None` (contrary to `Optional`)
     ```
     expect:
     Option.some(2).map(alwaysNull).defined
@@ -78,7 +78,7 @@
         ```
         return o == this
         ```
-* map doesn't breaks monadic laws
+* map does not breaks monadic laws
     ```
     given:
     Function<Integer, Integer> alwaysNull = { null }
