@@ -91,13 +91,13 @@ class Answers extends Specification {
         List<Option<Integer>> all = List.of(value1, value2, value3, value4)
 
         when:
-        Option<Number> valuesToValue3Sum = Option.sequence(from1To3).map({ it.sum() })
-        Option<Number> valuesToValue4Sum = Option.sequence(all).map({ it.sum() })
+        Option<Number> sum = Option.sequence(from1To3).map({ it.sum() })
+        Option<Number> empty = Option.sequence(all).map({ it.sum() })
 
         then:
-        valuesToValue3Sum.defined
-        valuesToValue3Sum.get() == 9
-        valuesToValue4Sum == Option.none()
+        sum.defined
+        sum.get() == 9
+        empty == Option.none()
     }
 
     def "load additional data only when person.isAdult"() {
