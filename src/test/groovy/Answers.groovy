@@ -79,7 +79,7 @@ class Answers extends Specification {
         notEmptyOptional == Optional.of(1)
     }
 
-    def "conversion: sum = Some(sum all option.get) or None if any of option is empty"() {
+    def "sum values of option sequence or return empty if any is empty"() {
         given:
         Option<Integer> value1 = Option.some(1)
         Option<Integer> value2 = Option.some(3)
@@ -87,12 +87,12 @@ class Answers extends Specification {
         Option<Integer> value4 = Option.none()
 
         and:
-        List<Option<Integer>> valuesToValue3 = List.of(value1, value2, value3)
-        List<Option<Integer>> valuesToValue4 = List.of(value1, value2, value3, value4)
+        List<Option<Integer>> from1To3 = List.of(value1, value2, value3)
+        List<Option<Integer>> all = List.of(value1, value2, value3, value4)
 
         when:
-        Option<Number> valuesToValue3Sum = Option.sequence(valuesToValue3).map({ it.sum() })
-        Option<Number> valuesToValue4Sum = Option.sequence(valuesToValue4).map({ it.sum() })
+        Option<Number> valuesToValue3Sum = Option.sequence(from1To3).map({ it.sum() })
+        Option<Number> valuesToValue4Sum = Option.sequence(all).map({ it.sum() })
 
         then:
         valuesToValue3Sum.defined

@@ -77,25 +77,25 @@ class Workshop extends Specification {
         notEmptyOptional == Optional.of(1)
     }
 
-    def "conversion: sum = Some(sum all option.get) or None if any of option is empty"() {
+    def "sum values of option sequence or return empty if any is empty"() {
         given:
         Option<Integer> value1 = Option.some(1)
         Option<Integer> value2 = Option.some(3)
         Option<Integer> value3 = Option.some(5)
         Option<Integer> value4 = Option.none()
-
+        
         and:
-        List<Option<Integer>> valuesToValue3 = List.of(value1, value2, value3)
-        List<Option<Integer>> valuesToValue4 = List.of(value1, value2, value3, value4)
+        List<Option<Integer>> from1To3 = List.of(value1, value2, value3)
+        List<Option<Integer>> all = List.of(value1, value2, value3, value4)
 
         when:
-        Option<Number> valuesToValue3Sum = -1 // sum here, hint: sequence
-        Option<Number> valuesToValue4Sum = -1 // sum here, hint: sequence
+        Option<Number> sum = -1 // sum here from1To3, hint: sequence, map
+        Option<Number> empty = -1 // sum here all, hint: sequence, map
 
         then:
-        valuesToValue3Sum.defined
-        valuesToValue3Sum.get() == 9
-        valuesToValue4Sum == Option.none()
+        sum.defined
+        sum.get() == 9
+        empty == Option.none()
     }
 
     def "load additional data only when person.isAdult"() {
