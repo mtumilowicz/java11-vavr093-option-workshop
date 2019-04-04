@@ -29,6 +29,7 @@
 * it is possible to have `Some(null)`, so `NPE` is possible even on defined `Option`
 * excellent for modelling exists / not exists (Spring Data - `findById`)
     * however not every "exceptional" behaviour could be modelled as exists / not exists
+    
 # conclusions in a nutshell
 * **we omit methods that `Optional` has**
 * easy conversion `Option` <-> `Optional`
