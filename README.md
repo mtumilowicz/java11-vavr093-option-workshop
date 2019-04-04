@@ -26,6 +26,7 @@
     Option.some(2).map(alwaysNull).defined
     Optional.of(2).map(alwaysNull).empty
     ```
+* it is possible to have `Some(null)`, so `NPE` is possible even on defined `Option`
 * excellent for modelling exists / not exists (Spring Data - `findById`)
     * however not every "exceptional" behaviour could be modelled as exists / not exists
 # conclusions in a nutshell
@@ -43,14 +44,52 @@
     * if function is not defined at a value - returns `None`
 * side effects on `None`
     * `Option<T> onEmpty(Runnable action)`
+* side effects on `Some`
+    * `Option<T> peek(Consumer<? super T> action)`
 * lazy alternative (in `Optional` since 11)
     * `Option<T> orElse(Supplier<? extends Option<? extends T>> supplier)`
+* `transform` function could be always replaced with more expressive and natural `map(...).orElse(...)`
+    ```
+    given:
+    Function<Option<Integer>, String> transformer = { it.isEmpty() ? '' : it.get().toString() }
+    expect:
+    Option.of(5).transform(transformer) == '5'
+    ```
+    same as
+    ```
+    given:
+    Function<Option<Integer>, String> transformer = { it.isEmpty() ? '' : it.get().toString() }
+    expect:
+    transformerFive = Option.of(5).map({it.toString()}).orElse('') == '5'
+    ```
+* conversion `Option<T>` <-> `List<T>`
+    * `option.toList()`
+    * `list.toOption()`
+* could be treated as collection
+    * `boolean contains(T element)`
+    * `boolean exists(Predicate<? super T> predicate)`
+    * `boolean forAll(Predicate<? super T> predicate)`
 * well written equals
-    * Some
+    * `Some`
         ```
         return (obj == this) || (obj instanceof Some && Objects.equals(value, ((Some<?>) obj).value));
         ```
-    * None
+    * `None`
         ```
         return o == this
         ```
+* map doesn't breaks monadic laws
+    ```
+    given:
+    Function<Integer, Integer> alwaysNull = { null }
+    Function<Integer, String> safeToString = { nonNull(it) ? String.valueOf(it) : 'null' }
+    Function<Integer, String> composition = alwaysNull.andThen(safeToString)
+    
+    expect:
+    Optional.of(1).map(composition) != Optional.of(1).map(alwaysNull).map(safeToString)
+    Optional.of(1).stream().map(composition).findAny() == Optional.of(1).stream()
+            .map(alwaysNull)
+            .map(safeToString)
+            .findAny()
+    Option.of(1).map(composition) == Option.of(1).map(alwaysNull).map(safeToString)
+    ```
