@@ -11,5 +11,8 @@
 * on the workshop we will try to fix failing `Workshop`
 * answers: `Answers` (same tests as in `Workshop` but correctly solved)
 
+# theory in a nutshell
+TBA
+
 # conclusions in a nutshell
 TBA
