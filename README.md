@@ -39,7 +39,7 @@
     * `Option.sequence(list)`
     * if any of the `Options` are `None` - returns `None`
 * conditional supplier
-    * `Option<T> when(boolean condition, Supplier<? extends T> supplier)`
+    * `static Option<T> when(boolean condition, Supplier<? extends T> supplier)`
 * mapping with partial function
     * `Option<R> collect(PartialFunction<? super T, ? extends R> partialFunction)`
     * if function is not defined at a value - returns `None`
