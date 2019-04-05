@@ -12,7 +12,7 @@
 * answers: `Answers` (same tests as in `Workshop` but correctly solved)
 
 # theory in a nutshell
-* similar to Optional, but with bigger, more flexible API
+* similar to `Optional`, but with bigger, more flexible API
 * `interface Option<T> extends Value<T>, Serializable`
     * `interface Value<T> extends Iterable<T>`
 * `Option` is isomorphic to singleton list (either has element or not, so it could be treated as collection)
