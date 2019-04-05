@@ -32,7 +32,7 @@
     
 # conclusions in a nutshell
 * **we omit methods that `Optional` has**
-* easy conversion `Option` <-> `Optional`
+* easy conversion `Option<T>` <-> `Optional<T>`
     * `Option.ofOptional`
     * `option.toJavaOptional()`
 * handy conversion `List<Option<T>> -> Option<List<T>>`
