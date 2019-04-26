@@ -61,7 +61,9 @@
     given:
     Function<Option<Integer>, String> transformer = { it.isEmpty() ? '' : it.get().toString() }
     expect:
-    transformerFive = Option.of(5).map({it.toString()}).orElse('') == '5'
+    transformerFive = Option.of(5)
+        .map { it.toString() }
+        .orElse('') == '5'
     ```
 * conversion `Option<T>` <-> `List<T>`
     * `option.toList()`
