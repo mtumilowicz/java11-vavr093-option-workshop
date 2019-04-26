@@ -91,8 +91,10 @@ class Answers extends Specification {
         List<Option<Integer>> all = List.of(value1, value2, value3, value4)
 
         when:
-        Option<Number> sum = Option.sequence(from1To3).map({ it.sum() })
-        Option<Number> empty = Option.sequence(all).map({ it.sum() })
+        Option<Number> sum = Option.sequence(from1To3)
+                .map { it.sum() }
+        Option<Number> empty = Option.sequence(all)
+                .map { it.sum() }
 
         then:
         sum.defined
@@ -121,10 +123,10 @@ class Answers extends Specification {
         Option<Integer> zero = Option.some(0)
 
         and:
-        PartialFunction<Integer, Integer> div = Function1.of({ 5 / it })
-                .partial({ it != 0 })
-        PartialFunction<Integer, Integer> add = Function1.of({ 5 + it })
-                .partial({ true })
+        PartialFunction<Integer, Integer> div = Function1.of { 5 / it }
+                .partial { it != 0 }
+        PartialFunction<Integer, Integer> add = Function1.of { 5 + it }
+                .partial { true }
 
         when:
         Option<Integer> dived = zero.collect(div)
@@ -160,8 +162,8 @@ class Answers extends Specification {
         Option<Person> kid = Option.some(new Person(15))
 
         when:
-        Option<Person> checkedAdult = adult.filter({ it.isAdult() })
-        Option<Person> checkedKid = kid.filter({ it.isAdult() })
+        Option<Person> checkedAdult = adult.filter { it.isAdult() }
+        Option<Person> checkedKid = kid.filter { it.isAdult() }
 
         then:
         checkedAdult == adult
@@ -190,7 +192,7 @@ class Answers extends Specification {
         def empty = Option.none()
 
         when:
-        empty.getOrElseThrow({ new IllegalStateException() })
+        empty.getOrElseThrow { new IllegalStateException() }
 
         then:
         thrown(IllegalStateException)
@@ -205,12 +207,12 @@ class Answers extends Specification {
         Function<Integer, Integer> squareOrZero = { nonNull(it) ? it * it : 0 }
 
         when:
-        Option<String> definedMapped = defined.map({ squareOrZero.apply(it) })
-                .map({ it.toString() })
-        Option<String> definedNullMapped = definedNull.map({ squareOrZero.apply(it) })
-                .map({ it.toString() })
-        Option<String> emptyMapped = empty.map({ squareOrZero.apply(it) })
-                .map({ it.toString() })
+        Option<String> definedMapped = defined.map { squareOrZero.apply(it) }
+                .map { it.toString() }
+        Option<String> definedNullMapped = definedNull.map { squareOrZero.apply(it) }
+                .map { it.toString() }
+        Option<String> emptyMapped = empty.map { squareOrZero.apply(it) }
+                .map { it.toString() }
 
         then:
         definedMapped.defined
@@ -244,7 +246,7 @@ class Answers extends Specification {
         Option<Integer> id = Option.some(1)
 
         when:
-        Option<Integer> found = id.flatMap({ FacadeRepositoryAnswer.findById(it) })
+        Option<Integer> found = id.flatMap { FacadeRepositoryAnswer.findById(it) }
 
         then:
         found.get() == 'from cache'
@@ -257,9 +259,9 @@ class Answers extends Specification {
 
         when:
         Option<Engine> engineFound = CarRepository.findCarById(existingCarId)
-                .flatMap({ CarRepository.findEngineById(it.engineId) })
+                .flatMap { CarRepository.findEngineById(it.engineId) }
         Option<Engine> engineNotFound = CarRepository.findCarById(notExistingCarId)
-                .flatMap({ CarRepository.findEngineById(it.engineId) })
+                .flatMap { CarRepository.findEngineById(it.engineId) }
 
         then:
         engineFound == Option.some(new Engine(1))
@@ -275,8 +277,8 @@ class Answers extends Specification {
         def counter = 0
 
         when:
-        empty.peek({ counter = +it })
-        five.peek({ counter = +it })
+        empty.peek { counter = +it }
+        five.peek { counter = +it }
 
         then:
         counter == 5
@@ -333,8 +335,8 @@ class Answers extends Specification {
         def list = List.of(List.of(1, 2, 3), HashSet.of(4, 5), Option.some(existing))
 
         when:
-        boolean exists = list.exists({ it.contains(existing) })
-        boolean notExists = list.exists({ it.contains(notExisting) })
+        boolean exists = list.exists { it.contains(existing) }
+        boolean notExists = list.exists { it.contains(notExisting) }
 
         then:
         exists
@@ -346,7 +348,7 @@ class Answers extends Specification {
         def list = List.of(List.of(1, 2, 3), HashSet.of(4, 5), Option.some(7))
 
         when:
-        boolean lessThan10 = list.forAll({ it.forAll({ it < 10 }) })
+        boolean lessThan10 = list.forAll { it.forAll { it < 10 } }
 
         then:
         lessThan10

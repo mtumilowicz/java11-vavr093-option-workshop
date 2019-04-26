@@ -8,7 +8,8 @@ import spock.lang.Specification
 import java.util.function.Function
 import java.util.function.Supplier
 
-import static java.util.Objects.nonNull 
+import static java.util.Objects.nonNull
+
 /**
  * Created by mtumilowicz on 2019-03-02.
  */
@@ -83,7 +84,7 @@ class Workshop extends Specification {
         Option<Integer> value2 = Option.some(3)
         Option<Integer> value3 = Option.some(5)
         Option<Integer> value4 = Option.none()
-        
+
         and:
         List<Option<Integer>> from1To3 = List.of(value1, value2, value3)
         List<Option<Integer>> all = List.of(value1, value2, value3, value4)
@@ -119,10 +120,10 @@ class Workshop extends Specification {
         Option<Integer> zero = Option.some(0)
 
         and:
-        PartialFunction<Integer, Integer> div = Function1.of({ 5 / it })
-                .partial({ it != 0 })
-        PartialFunction<Integer, Integer> add = Function1.of({ 5 + it })
-                .partial({ true })
+        PartialFunction<Integer, Integer> div = Function1.of { 5 / it }
+                .partial { it != 0 }
+        PartialFunction<Integer, Integer> add = Function1.of { 5 + it }
+                .partial { true }
 
         when:
         Option<Integer> dived = zero // convert here, hint: collect, use div()
