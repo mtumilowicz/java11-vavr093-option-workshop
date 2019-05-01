@@ -43,6 +43,9 @@
 * mapping with partial function
     * `Option<R> collect(PartialFunction<? super T, ? extends R> partialFunction)`
     * if function is not defined at a value - returns `None`
+* map, flatMap on `Option<R>`
+    * `Option<U> map(f: R -> U)`
+    * `Option<U> flatMap(f: R -> Option<U>)`
 * side effects on `None`
     * `Option<T> onEmpty(Runnable action)`
 * side effects on `Some`
