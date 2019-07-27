@@ -174,9 +174,9 @@ class Workshop extends Specification {
         def fakeId = 3
 
         when:
-        def fromCache = FacadeRepository.findById(fromCacheId)
-        def fromDatabase = FacadeRepository.findById(fromDatabaseId)
-        def notFound = FacadeRepository.findById(fakeId)
+        def fromCache = FacadeRepository.findById(fromCacheId) // go to FacadeRepository.findById and implement the method
+        def fromDatabase = FacadeRepository.findById(fromDatabaseId) // go to FacadeRepository.findById and implement the method
+        def notFound = FacadeRepository.findById(fakeId) // go to FacadeRepository.findById and implement the method
 
         then:
         Option.some('from cache') == fromCache
@@ -231,17 +231,6 @@ class Workshop extends Specification {
 
     }
 
-    def "flatten Option, basics"() {
-        given:
-        def id = Option.some(1)
-
-        when:
-        def found = id // perform mapping on id, use Repository.findById, hint: flatMap
-
-        then:
-        found.get() == 'from cache'
-    }
-
     def "flatten Option: find engine for a given car id"() {
         given:
         def existingCarId = 1
@@ -265,27 +254,11 @@ class Workshop extends Specification {
         def counter = 0
 
         when:
-        empty // increment counter here, hint: peek(), forEach()
-        five // increment counter here, hint: peek(), forEach()
+        empty // increment counter here, hint: peek() or forEach()
+        five // increment counter here, hint: peek() or forEach()
 
         then:
         counter == 5
-    }
-
-    def "convert: Option<Integer> -> String, Option.none() -> empty string"() {
-        given:
-        Option<Integer> empty = Option.none()
-        Option<Integer> five = Option.some(5)
-        and:
-        Function<Option<Integer>, String> transformer = { it.isEmpty() ? '' : it.get().toString() }
-
-        when:
-        def transformedEmpty = empty // transform here, hint: transform(), note: transform ~ (map getOrElse)
-        def transformerFive = five // transform here, hint: transform(), note: transform ~ (map getOrElse)
-
-        then:
-        transformedEmpty == ''
-        transformerFive == '5'
     }
 
     def "convert: Some<Integer> -> one element List<Integer>, None -> empty list"() {
@@ -294,8 +267,8 @@ class Workshop extends Specification {
         Option<Integer> five = Option.some(5)
 
         when:
-        List<Integer> transformedEmpty = empty // transform here, hint: toList or map, getOrElse
-        List<Integer> transformerFive = five // transform here, hint: toList or map, getOrElse
+        List<Integer> transformedEmpty = empty // transform here, hint: toList
+        List<Integer> transformerFive = five // transform here, hint: toList
 
         then:
         transformedEmpty == List.empty()
@@ -308,8 +281,8 @@ class Workshop extends Specification {
         List<Integer> five = List.of(5)
 
         when:
-        Option<Integer> transformedEmpty = empty // transform here, hint: toOption or map, getOrElse
-        Option<Integer> transformerFive = five // transform here, hint: toOption or map, getOrElse
+        Option<Integer> transformedEmpty = empty // transform here, hint: toOption
+        Option<Integer> transformerFive = five // transform here, hint: toOption
 
         then:
         transformedEmpty == Option.none()

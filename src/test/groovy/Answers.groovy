@@ -241,17 +241,6 @@ class Answers extends Specification {
 
     }
 
-    def "flatten Option, basics"() {
-        given:
-        Option<Integer> id = Option.some(1)
-
-        when:
-        Option<Integer> found = id.flatMap { FacadeRepositoryAnswer.findById(it) }
-
-        then:
-        found.get() == 'from cache'
-    }
-
     def "flatten Option: find engine for a given car id"() {
         given:
         def existingCarId = 1
@@ -282,22 +271,6 @@ class Answers extends Specification {
 
         then:
         counter == 5
-    }
-
-    def "convert: Option<Integer> -> String, Option.none() -> empty string"() {
-        given:
-        Option<Integer> empty = Option.none()
-        Option<Integer> five = Option.some(5)
-        and:
-        Function<Option<Integer>, String> transformer = { it.isEmpty() ? '' : it.get().toString() }
-
-        when:
-        def transformedEmpty = empty.transform(transformer)
-        def transformerFive = five.transform(transformer)
-
-        then:
-        transformedEmpty == ''
-        transformerFive == '5'
     }
 
     def "convert: Some<Integer> -> one element List<Integer>, None -> empty list"() {
