@@ -296,8 +296,8 @@ class Workshop extends Specification {
         def list = List.of(List.of(1, 2, 3), HashSet.of(4, 5), Option.some(existing))
 
         when:
-        boolean exists = list // perform searching here
-        boolean notExists = list // perform searching here
+        boolean exists = list // perform searching here, hint: exists, contains
+        boolean notExists = list // perform searching here, hint, exists, contains
 
         then:
         exists
@@ -309,7 +309,7 @@ class Workshop extends Specification {
         def list = List.of(List.of(1, 2, 3), HashSet.of(4, 5), Option.some(7))
 
         when:
-        boolean lessThan10 = list // perform action here
+        boolean lessThan10 = list // check here, hint: forAll
 
         then:
         lessThan10
