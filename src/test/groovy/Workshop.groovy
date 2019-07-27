@@ -289,7 +289,7 @@ class Workshop extends Specification {
         transformerFive == Option.some(5)
     }
 
-    def "check if somewhere in the list is 7"() {
+    def "check if some inner object contains 7"() {
         given:
         def existing = 7
         def notExisting = 10
@@ -304,7 +304,7 @@ class Workshop extends Specification {
         !notExists
     }
 
-    def "check if all values in the list are < 10"() {
+    def "check if all values in inner objects are < 10"() {
         given:
         def list = List.of(List.of(1, 2, 3), HashSet.of(4, 5), Option.some(7))
 
