@@ -40,7 +40,7 @@
     * if any of the `Options` are `None` - returns `None`
 * conditional supplier
     * `static Option<T> when(boolean condition, Supplier<? extends T> supplier)`
-* mapping with partial function
+* mapping with the partial function
     * `Option<R> collect(PartialFunction<? super T, ? extends R> partialFunction)`
     * if function is not defined for the value - returns `None`
 * side effects on `None`
