@@ -8,7 +8,7 @@
 * https://static.javadoc.io/io.vavr/vavr/0.9.3/io/vavr/control/Option.html
 * https://github.com/mtumilowicz/java11-vavr-option
 * https://github.com/mtumilowicz/java11-category-theory-optional-is-not-functor
-* on the workshop we will try to fix failing `Workshop`
+* in the workshop we will try to fix failing `Workshop`
 * answers: `Answers` (same tests as in `Workshop` but correctly solved)
 
 # theory in a nutshell
@@ -28,7 +28,7 @@
     ```
 * it is possible to have `Some(null)`, so `NPE` is possible even on defined `Option`
 * excellent for modelling exists / not exists (Spring Data - `findById`)
-    * however not every "exceptional" behaviour could be modelled as exists / not exists
+    * not every "exceptional" behaviour could be modelled as exists / not exists
     
 # conclusions in a nutshell
 * **we omit methods that `Optional` has**
@@ -42,17 +42,14 @@
     * `static Option<T> when(boolean condition, Supplier<? extends T> supplier)`
 * mapping with partial function
     * `Option<R> collect(PartialFunction<? super T, ? extends R> partialFunction)`
-    * if function is not defined at a value - returns `None`
-* map, flatMap on `Option<R>`
-    * `Option<U> map(f: R -> U)`
-    * `Option<U> flatMap(f: R -> Option<U>)`
+    * if function is not defined for a value - returns `None`
 * side effects on `None`
     * `Option<T> onEmpty(Runnable action)`
 * side effects on `Some`
     * `Option<T> peek(Consumer<? super T> action)`
 * lazy alternative (in `Optional` since 11)
     * `Option<T> orElse(Supplier<? extends Option<? extends T>> supplier)`
-* `transform` function could be always replaced with more expressive and natural `map(...).orElse(...)`
+* `transform` function could be nearly always replaced with more expressive and natural `map(...).orElse(...)`
     ```
     given:
     Function<Option<Integer>, String> transformer = { it.isEmpty() ? '' : it.get().toString() }
